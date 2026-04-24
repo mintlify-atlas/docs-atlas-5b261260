@@ -1,0 +1,78 @@
+---
+title: "Layout 9: Before / After comparison"
+description: "Two-column contrast layout for old vs new paradigms. The left (old) column is de-emphasized at opacity:0.55; the right (new) column is full brightness."
+---
+
+The before/after layout is for contrasting old and new approaches, before and after states, or competing paradigms. Two equal columns sit side by side: the left column represents the old model and is rendered at `opacity:.55` to signal it as the thing being replaced; the right column represents the new model at full brightness. Both columns use a left border and padding to create a blockquote-like framing.
+
+**Default theme:** `light` (two dense text columns need a clean background for readability)
+
+## HTML skeleton
+
+```html
+<section class="slide light">
+  <div class="chrome">
+    <div>旧 vs 新 · The Shift</div>
+    <div>12 / 25</div>
+  </div>
+  <div class="frame" style="padding-top:5vh">
+    <div class="kicker">Before / After · 范式转变</div>
+    <h2 class="h-xl" style="margin-bottom:4vh">从交接到共建</h2>
+
+    <div class="grid-2-6-6" style="gap:5vw 4vh">
+      <!-- 左列：旧 -->
+      <div style="padding:3vh 2vw; border-left:3px solid currentColor; opacity:.55">
+        <div class="kicker" style="opacity:.9">Before · 旧模式</div>
+        <h3 class="h-md" style="margin-top:2vh">设计 → 开发 → 交接</h3>
+        <ul style="margin-top:3vh; padding-left:1.2em; display:flex; flex-direction:column; gap:1.4vh; font-family:var(--sans-zh); font-size:max(14px,1.1vw); line-height:1.55">
+          <li>设计师在 Figma 做稿</li>
+          <li>开发者盯着文件翻译像素</li>
+          <li>反复 PR 沟通对齐</li>
+          <li>非技术人员无法触碰代码</li>
+        </ul>
+      </div>
+      <!-- 右列:新 -->
+      <div style="padding:3vh 2vw; border-left:3px solid currentColor">
+        <div class="kicker" style="opacity:.9">After · 新模式</div>
+        <h3 class="h-md" style="margin-top:2vh">同工具 · 并行 · 共建</h3>
+        <ul style="margin-top:3vh; padding-left:1.2em; display:flex; flex-direction:column; gap:1.4vh; font-family:var(--sans-zh); font-size:max(14px,1.1vw); line-height:1.55">
+          <li>三个角色同时在 Intent 工作</li>
+          <li>agents.md 作为共享上下文</li>
+          <li>代理处理对齐 / 冲突 / 动画</li>
+          <li>任何人都能安全贡献代码</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="foot">
+    <div>Page 12 · 范式转变</div>
+    <div>Before / After</div>
+  </div>
+</section>
+```
+
+## Grid and visual treatment
+
+The layout uses `.grid-2-6-6` for a perfect 1:1 split. The `gap:5vw 4vh` override widens the horizontal gap between columns to create a clear visual separation between the two states.
+
+**Left column (old):** `opacity:.55` applies to the entire column div, including its kicker, heading, and bullet list. This makes the old state visually recede without removing it — the audience can still read it, but their eye is drawn to the right column first.
+
+**Right column (new):** full opacity, same structure as the left. The contrast between 55% and 100% opacity does all the argumentative work — no color coding, icons, or labels needed beyond the kicker.
+
+## Column structure
+
+Both columns follow the same internal structure for visual consistency:
+
+```
+div (padding + border-left)
+  .kicker           ← "Before · 旧模式" or "After · 新模式"
+  h3.h-md           ← concise label for the state (≤ 5 words)
+  <ul>              ← 3–5 bullet points, flex column for spacing
+    <li>            ← each bullet is one concrete, parallel statement
+```
+
+## `border-left` framing
+
+Both columns use `border-left:3px solid currentColor` to give them a blockquote-like visual frame. `currentColor` inherits the theme's ink color automatically, so the border works on both `light` and `dark` themes without any override.
+
+Keep the bullet points parallel in structure across both columns — if the left has 4 bullets, the right should have 4 bullets. Mismatched counts make the comparison feel unbalanced.

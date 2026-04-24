@@ -1,0 +1,88 @@
+---
+title: "Layout 3: Big numbers data grid"
+description: "Stat-card grid for presenting hard data metrics with visual impact — large serif numbers, short labels, notes, in a 3×2 or 2×2 grid on a light slide."
+---
+
+The big numbers layout is for presenting hard data that creates immediate impact. A grid of stat cards — each with a small English label, a large number, and a short note — delivers metrics at a glance without requiring the audience to read body text. Use it early in a deck to establish credibility with concrete evidence before moving into narrative slides.
+
+**Default theme:** `light` (digits need a paper-white background for maximum contrast; you may occasionally insert `dark` for rhythm in multi-act decks)
+
+## HTML skeleton
+
+```html
+<section class="slide light">
+  <div class="chrome">
+    <div>过去 64 天 · 开发篇</div>
+    <div>Act I / Dev · 02 / 25</div>
+  </div>
+  <div class="frame" style="padding-top:6vh">
+    <div class="kicker">一个人，做了什么。</div>
+    <h2 class="h-xl">过去 64 天</h2>
+    <p class="lead" style="margin-bottom:5vh">从 0 到开源 CodePilot。</p>
+
+    <div class="grid-6" style="margin-top:6vh">
+      <div class="stat-card">
+        <div class="stat-label">Duration</div>
+        <div class="stat-nb">64 <span class="stat-unit">天</span></div>
+        <div class="stat-note">从 0 到现在</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Lines of Code</div>
+        <div class="stat-nb">110K+</div>
+        <div class="stat-note">一行行写到 11 万+</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">GitHub Stars</div>
+        <div class="stat-nb">5,166</div>
+        <div class="stat-note">一个开源仓库</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Downloads</div>
+        <div class="stat-nb">41K+</div>
+        <div class="stat-note">装到了几万台电脑里</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">AI Providers</div>
+        <div class="stat-nb">19</div>
+        <div class="stat-note">跨平台接入</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Commits</div>
+        <div class="stat-nb">608+</div>
+        <div class="stat-note">没有协作者</div>
+      </div>
+    </div>
+  </div>
+  <div class="foot">
+    <div>项目 · CodePilot　|　github.com/codepilot</div>
+    <div>Act I · Dev Numbers</div>
+  </div>
+</section>
+```
+
+## Stat card structure
+
+Each `.stat-card` follows a fixed three-layer hierarchy:
+
+```
+.stat-label   ← English small caps, names the metric
+.stat-nb      ← the number itself (large, high-contrast)
+  .stat-unit  ← optional unit suffix inline with the number
+.stat-note    ← short description note below the number
+```
+
+## Grid options
+
+| Class | Layout | Best for |
+|-------|--------|----------|
+| `.grid-6` | 3×2 | Six stats — the most common configuration |
+| `.grid-4` | 2×2 | Four stats — when you want more breathing room per card |
+| `.grid-3` | 3 columns, single row | Three stats — maximum impact per number |
+
+## Number formatting
+
+Keep numbers to 2–3 characters. Use K and M abbreviations (41K, 1.2M) rather than writing out full digits. Numbers longer than 5 characters will overflow the stat card on small screens.
+
+<Warning>
+Leave at least 5vh of top padding above the stat grid (`padding-top:6vh` on `.frame`) so the heading and lead paragraph claim visual priority before the grid appears. If the grid starts too close to the top of the slide, the numbers compete with the heading and neither wins.
+</Warning>

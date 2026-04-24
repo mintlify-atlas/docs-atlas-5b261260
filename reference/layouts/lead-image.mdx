@@ -1,0 +1,82 @@
+---
+title: "Layout 10: Lead image with side text"
+description: "The most information-dense layout: an 8:4 grid with a multi-layer text column (kicker, heading, lead, body, callout) and a portrait image on the right."
+---
+
+The lead image with side text layout is the most information-dense layout in the system. It is designed for pages where both detailed text and an illustrative image are needed — not just a one-liner and a photo, but a full content stack: kicker, large heading, lead paragraph, body paragraph, and a callout, all in the left column, with a supporting portrait or square image in the right column. Use it for phase descriptions, case studies, and any page where the audience needs to read as well as see.
+
+**Default theme:** `light` and `dark` alternating (same rhythm role as Layout 4)
+
+## HTML skeleton
+
+```html
+<section class="slide light">
+  <div class="chrome">
+    <div>Design First · 设计先行</div>
+    <div>08 / 16</div>
+  </div>
+  <div class="frame grid-2-8-4" style="padding-top:6vh">
+    <!-- 左列:大段正文 + 引用 -->
+    <div>
+      <div class="kicker">Phase 01 · 设计阶段</div>
+      <h2 class="h-xl" style="margin-top:1vh; margin-bottom:3vh">设计先行 · 2 周</h2>
+
+      <p class="lead" style="margin-bottom:3vh">
+        在 Figma 中完成视觉探索与设计系统,网格 / 排版 / 颜色变量 / 可复用组件,桌面和移动端稿件几轮反馈迭代。
+      </p>
+
+      <p style="font-family:var(--sans-zh); font-size:max(14px,1.15vw); line-height:1.75; opacity:.78; margin-bottom:2.4vh">
+        两周之内,视觉风格、粗略结构、方向性内容全部稳定。这是扎实的传统设计流程——在这里还没什么新鲜事。
+      </p>
+
+      <div class="callout" style="margin-top:3vh">
+        "This phase was pretty standard.<br>Just a solid Web design process."
+        <div class="callout-src">— Luke Wroblewski</div>
+      </div>
+    </div>
+    <!-- 右列:辅助图 · 竖版或方形 -->
+    <figure class="frame-img" style="aspect-ratio:3/4; max-height:60vh">
+      <img src="images/figma.png" alt="Figma design system">
+      <figcaption class="img-cap">Figma · Design System</figcaption>
+    </figure>
+  </div>
+  <div class="foot">
+    <div>Page 08 · Design First</div>
+    <div>约 2 周</div>
+  </div>
+</section>
+```
+
+## Grid
+
+The layout uses `.grid-2-8-4`: the left column receives 8 parts and the right column receives 4 parts (a 2:1 ratio). This gives the text column clear dominance — the image is a supporting element, not a co-equal visual. The `align-items:start` default in `template.html` anchors both columns to the top of the grid.
+
+## Left column structure
+
+The left column contains multiple information layers in a fixed order:
+
+```
+.kicker          ← page hook, distinct from .chrome label
+h2.h-xl          ← main heading for this page
+p.lead           ← introductory sentence, larger weight
+<p>              ← body paragraph, smaller, opacity:.78
+.callout         ← attributed quote or key insight
+  .callout-src   ← attribution line
+```
+
+All five layers are optional but should appear in this order when present. Do not reorder them — the hierarchy from large to small creates a natural reading flow.
+
+## Right column image ratio
+
+Use a **portrait ratio (3:4)** or **square (1:1)** for the right column image — never a landscape ratio. A landscape image in a narrow 4-part column would need to be very short vertically, leaving visual dead space below it. A portrait or square image fills the column height naturally and does not compete with the large text column for horizontal attention.
+
+## When to use vs Layout 4
+
+| Situation | Use |
+|-----------|-----|
+| One strong statement + one supporting image | [Layout 4: Quote + Image](/reference/layouts/quote-image) |
+| Multiple content layers (lead + body + callout) + an image | Layout 10: Lead Image + Side Text |
+| Phase-by-phase breakdown where each phase needs full context | Layout 10 |
+| Identity reveal or narrative hook slide | Layout 4 |
+
+Layout 10 is for pages where the text alone could fill the slide — the image is an enhancement. Layout 4 is for pages where the statement is everything and the image is equal in weight to the text.

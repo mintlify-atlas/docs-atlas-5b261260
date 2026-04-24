@@ -1,0 +1,56 @@
+---
+title: "Copying and configuring the HTML template"
+description: "Copy assets/template.html to your project folder, replace the title placeholder, and apply one of the 5 theme presets by editing six CSS variables."
+---
+
+Every deck starts from `assets/template.html` — a single, fully runnable HTML file that already contains the WebGL shader, the horizontal swipe navigation JavaScript, all Google Fonts CDN links, the Lucide icon library, and three example slides (a cover, an act divider, and a blank filler page). The template exists so that you never have to reconstruct the infrastructure from scratch. The only parts you write are the `<section>` elements inside `<main id="deck">`.
+
+## Copy the template
+
+Run these two commands to set up the project folder. Adjust `项目/XXX` to match your actual project path.
+
+```bash
+mkdir -p "项目/XXX/ppt/images"
+cp "<SKILL_ROOT>/assets/template.html" "项目/XXX/ppt/index.html"
+```
+
+The `images/` subfolder is created at the same time so that relative image paths work immediately without further setup.
+
+## Replace mandatory placeholders
+
+After copying, the very first thing to do is update the `<title>` tag. The template ships with a placeholder that will appear in the browser tab if you forget:
+
+| Location | Original value | Replace with |
+|----------|---------------|--------------|
+| `<title>` | `[必填] 替换为 PPT 标题 · Deck Title` | The actual deck title, e.g. `一种新的工作方式 · Luke Wroblewski` |
+
+Run this grep command to confirm every mandatory placeholder has been replaced before continuing:
+
+```bash
+grep "[必填]" "项目/XXX/ppt/index.html"
+```
+
+The command should return no output. If it prints any lines, fix those placeholders before proceeding.
+
+## Select a theme
+
+There are 5 carefully tuned theme presets. Replacing 6 CSS variables in `:root{}` is all that is required — every other color in the stylesheet uses `var(--...)` and will update automatically.
+
+For the full comparison table of all 5 themes including exact CSS values, best-fit content types, and application guidance, see [Choosing a color theme](/workflow/themes).
+
+The 6 variables to replace are:
+
+```css
+--ink          /* Primary text / foreground color */
+--ink-rgb      /* Same color as --ink, expressed as R,G,B for rgba() usage */
+--paper        /* Background color */
+--paper-rgb    /* Same color as --paper, expressed as R,G,B */
+--paper-tint   /* Slightly darker than --paper, used for subtle surface separations */
+--ink-tint     /* Slightly lighter than --ink, used for secondary text and borders */
+```
+
+Find the `:root{` block near the top of the copied `index.html` and replace only those six lines with the values from the chosen theme preset. Do not touch any other CSS.
+
+<Warning>
+  Never create a new HTML file from scratch. Always start from `assets/template.html` — it contains pre-defined CSS classes (`h-hero`, `stat-card`, `pipeline`, `grid-2-7-5`, and dozens more) that all layout skeletons depend on. Building from a blank file means those classes will be absent, and every layout will silently fall back to unstyled browser defaults: serif headings will render in sans-serif, stat cards will collapse into a single column, and pipeline steps will stack vertically.
+</Warning>

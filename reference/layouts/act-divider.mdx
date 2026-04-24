@@ -1,0 +1,41 @@
+---
+title: "Layout 2: Act divider (chapter transition)"
+description: "Minimal transition slides between major deck sections — use alternating hero light and hero dark themes to create visual breathing room between acts."
+---
+
+Act dividers are intentionally minimal transition slides placed between the major thematic sections of a deck. They carry almost no information — just a kicker, a large heading, and a single-line lead — so the audience registers "we're moving to a new chapter" without processing new content. Alternating between `hero light` and `hero dark` on successive act dividers gives the deck its visual breathing rhythm.
+
+**Default theme:** `hero dark` and `hero light` — must alternate between acts
+
+## HTML skeleton
+
+```html
+<section class="slide hero light">
+  <div class="chrome">
+    <div>第一幕 · 硬数据</div>
+    <div>Act I · 01 / 25</div>
+  </div>
+  <div class="frame" style="display:grid; gap:6vh; align-content:center; min-height:80vh">
+    <div class="kicker">Act I</div>
+    <h1 class="h-hero" style="font-size:8.5vw">硬数据</h1>
+    <p class="lead" style="max-width:55vw">
+      先看数字，再谈方法。
+    </p>
+  </div>
+  <div class="foot">
+    <div>第一幕引子</div>
+    <div>— · —</div>
+  </div>
+</section>
+```
+
+## Key points
+
+- **Extreme minimalism** is the rule: kicker + large heading + one-line lead. Do not add body paragraphs, stat cards, or images to an act divider.
+- **Alternate `hero light` / `hero dark`** across successive act dividers — if Act I is `hero light`, Act II must be `hero dark`, and so on. This alternation is a hard rhythm rule.
+- **`h-hero` font size is adjustable**: the default is 10vw, but you can scale down to 8.5vw (as shown in the skeleton) for longer act titles. Never scale below 7vw — below that it no longer reads as a hero-scale heading.
+- Keep the `.chrome` left label aligned with the act label in the `.kicker` — but do not make them identical. The chrome is the navigational metadata (stable, reusable across pages); the kicker is the dramatic hook (unique to this page).
+
+## When to use
+
+Place an act divider at the start of every major thematic section. In a 25-page deck, expect 2–3 act dividers. Do not use them as content slides or as the final slide — for the closing, use [Layout 7: Hero Question](/reference/layouts/hero-question) or [Layout 8: Big Quote](/reference/layouts/big-quote).

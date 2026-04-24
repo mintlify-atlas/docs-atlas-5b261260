@@ -1,0 +1,396 @@
+---
+title: "Component reference for Magazine Web PPT slides"
+description: "Reference for all slide components: typography classes, chrome/foot, callout, stat, platform card, rowline, pillar, figure, icons, ghost, and highlight."
+---
+
+Every slide in a Magazine Web PPT deck is built from a fixed set of components defined in `template.html`. The styles are already there — your job is to pick the right component and drop in the right content. This reference shows what each component looks like, how to use it, and what constraints apply.
+
+<Note>
+All components are pre-styled in `template.html`. Never define custom classes in individual slides — if a class is missing, add it to `template.html`'s `<style>` block.
+</Note>
+
+<AccordionGroup>
+
+<Accordion title="Slide shell">
+
+Every page is a `<section class="slide ...">`. The `data-theme` attribute is required — the navigation JS reads it to switch the WebGL background between light and dark canvas layers when you flip pages.
+
+```html
+<section class="slide light" data-theme="light">   <!-- standard light page -->
+<section class="slide dark" data-theme="dark">     <!-- standard dark page -->
+<section class="slide light hero" data-theme="light">  <!-- hero: light + thin mask reveals WebGL -->
+<section class="slide dark hero" data-theme="dark">    <!-- hero: dark + thin mask -->
+```
+
+**light vs dark** — alternate every 2-3 pages. Never run more than 3 consecutive pages in the same theme. When you flip, the WebGL background gradually transitions between its two shader states.
+
+**hero class** — add it only to visually dominant pages: cover, pull-quote, act dividers, closing slide. Adding `hero` drops the overlay mask to 12–16 %, letting the WebGL background show through strongly. Don't crowd hero pages with body text.
+
+</Accordion>
+
+<Accordion title="Typography classes">
+
+Font assignment is the most important rule in the template. Mixing font roles immediately breaks the magazine aesthetic.
+
+| Class | Use | Font | Size |
+|---|---|---|---|
+| `.display` | Oversized English (hero pages) | Playfair Display 700 | 11vw |
+| `.display-zh` | Oversized Chinese heading | Noto Serif SC 700 | 7.8vw |
+| `.h1-zh` | Page main heading | Noto Serif SC 700 | 4.6vw |
+| `.h2-zh` | Subheading | Noto Serif SC 600 | 3.2vw |
+| `.h3-zh` | Pipeline step heading | Noto Serif SC 500 | 1.9vw |
+| `.lead` | Lead paragraph (larger than body) | Noto Serif SC 400 | 1.9vw |
+| `.body-zh` | **Body / description (sans-serif)** | Noto Sans SC 400 | 1.22vw |
+| `.body-serif` | Body (serif) | Noto Serif SC 400 | 1.3vw |
+| `.kicker` | Section hint above heading | IBM Plex Mono | 12px uppercase |
+| `.meta` | Metadata label | IBM Plex Mono | 0.88vw uppercase |
+| `.big-num` | Giant number | Playfair Display 800 | 10vw |
+| `.mid-num` | Mid-size number | Playfair Display 700 | 5.5vw |
+
+**CSS font variables** — the template maps four logical roles to the loaded typefaces:
+
+- `--serif-zh` — Noto Serif SC (Chinese headings and pull quotes)
+- `--serif-en` — Playfair Display (English display and numbers)
+- `--sans-zh` — Noto Sans SC (body text and descriptions)
+- `--mono` — IBM Plex Mono (kickers, meta labels, foot copy)
+
+**Core rule:**
+- Serif (`--serif-zh` / `--serif-en`): headings, key pull quotes, numbers — "visual accent"
+- Sans-serif (`--sans-zh`): body, descriptions, dense reading — "information density"
+- Monospace (`--mono`): kicker, meta, foot English labels — "decorative rhythm"
+
+**Emphasis techniques:**
+
+```html
+<!-- Render an English word in Playfair Display italic — looks great inline -->
+<em class="en">Thin Harness, Fat Skills.</em>
+
+<!-- Fade the second half of a heading to create visual rhythm -->
+Skills <em style="opacity:.65">不是一次性爆发</em>
+```
+
+</Accordion>
+
+<Accordion title="Chrome & Foot">
+
+The top and bottom metadata strips that appear on almost every page. Together they create the magazine header/footer feel.
+
+```html
+<div class="chrome">
+  <div class="left">
+    <span>第一幕 · 硬数据</span>
+    <span class="sep"></span>
+    <span>Act I</span>
+  </div>
+  <div class="right"><span>02 / 27</span></div>
+</div>
+
+<!-- ... page body ... -->
+
+<div class="foot">
+  <div class="title">项目名 · CodePilot　|　github.com/codepilot</div>
+  <div>Act I · Dev Numbers</div>
+</div>
+```
+
+**Rules:**
+- `chrome.right` always holds the page number in `NN / TOTAL` format (TOTAL is the hardcoded total page count).
+- `foot.title` is the Chinese description; `foot.right` is the English act label.
+- Chrome and foot together form the magazine's running header/footer — they are not the same as the per-page kicker.
+
+</Accordion>
+
+<Accordion title="Callout">
+
+A bordered quote box for pull quotes, key observations, or attributed citations.
+
+```html
+<div class="callout" style="max-width:80vw">
+  <div class="q-big">"这东西在三年前，<br>需要一个十人团队做一年。"</div>
+  <span class="cite">— 一个观察者的判断</span>
+</div>
+```
+
+**Variants:**
+
+- **No citation** — omit the `<span class="cite">` entirely.
+- **English pull quote** — use `<em class="en">` inside `.q-big`:
+  ```html
+  <div class="q-big"><em class="en">"Thin Harness, Fat Skills."</em></div>
+  ```
+- **On a hero page** — wrap in a relative-positioned container so the callout sits above the WebGL mask:
+  ```html
+  <div style="position:relative;z-index:2">
+    <div class="callout">...</div>
+  </div>
+  ```
+
+</Accordion>
+
+<Accordion title="Stat">
+
+The data metrics component. Displays a three-part structure: label → giant number → note. Always used inside a grid container.
+
+```html
+<div class="grid-6">
+  <div class="stat">
+    <span class="m">Duration</span>
+    <span class="n">64<em style="font-size:.4em;opacity:.5;font-style:normal"> 天</em></span>
+    <span class="l">从 0 到现在</span>
+  </div>
+  <!-- ... more stat items ... -->
+</div>
+```
+
+Three-part structure: `.m` monospace label → `.n` giant number → `.l` descriptive note. Units after the number use `<em>` shrunk to `0.4em` at `opacity: 0.5`.
+
+**Grid containers:**
+- `.grid-6` — 3 × 2 grid (most common, six stats)
+- `.grid-4` — 2 × 2 grid (four stats)
+- `.grid-3` — three equal columns, single row (three stats or pillars)
+
+</Accordion>
+
+<Accordion title="Platform card">
+
+Displays a social platform or distribution channel alongside a follower or subscriber count.
+
+```html
+<div class="plat">
+  <div class="sub">Weibo</div>
+  <div class="name">微博</div>
+  <div class="nb">289K</div>
+</div>
+```
+
+**Optional fourth line** (supplementary note):
+
+```html
+<div class="body-zh" style="font-size:max(11px,.8vw);opacity:.5;margin-top:.6vh">
+  含小绿书同步
+</div>
+```
+
+**"Also On" dashed variant** (secondary platforms):
+
+```html
+<div class="plat" style="border-top-style:dashed;opacity:.72">
+  <div class="sub">Also On</div>
+  <div class="body-zh" style="font-weight:600;margin-top:.8vh">
+    B 站　·　知乎
+  </div>
+</div>
+```
+
+</Accordion>
+
+<Accordion title="Rowline">
+
+A list-style row for tabular or dictionary-style content. The first and last rowline in a group automatically get top and bottom borders.
+
+```html
+<div class="rowline">
+  <div class="k">CLAUDE.md</div>
+  <div class="v">你该怎么做事 —— 行为规则 + 工作偏好 + 禁止事项</div>
+  <div class="m">EMPLOYEE · HANDBOOK</div>
+</div>
+```
+
+Three-column structure: `.k` serif keyword · `.v` body description · `.m` monospace label (right-aligned).
+
+**Two-column variant** — remove the `.m` column and override the grid:
+
+```html
+<div class="rowline" style="grid-template-columns:1fr 3fr">
+  <div class="k">CLAUDE.md</div>
+  <div class="v">你该怎么做事 —— 行为规则 + 工作偏好 + 禁止事项</div>
+</div>
+```
+
+</Accordion>
+
+<Accordion title="Pillar">
+
+Three-pillar layout for parallel concepts. Always used inside `.grid-3`.
+
+```html
+<div class="grid-3">
+  <div class="pillar">
+    <div class="ic">01</div>
+    <div class="t">三层<br>文档体系</div>
+    <div class="d">CLAUDE.md<br>+ 项目知识库<br>+ 护栏文件</div>
+  </div>
+  <!-- ... more pillars ... -->
+</div>
+```
+
+**Icon variant** (for emphasis pages):
+
+```html
+<div class="pillar" style="padding:4vh 2vw;border:1px solid currentColor;border-color:rgba(10,10,11,.2)">
+  <div class="ic"><i data-lucide="compass" class="ico-lg"></i></div>
+  <div class="t">判断力</div>
+  <div class="d">决策和方向的权威。<br>取舍、品味、方向感。</div>
+</div>
+```
+
+`.ic` accepts either a sequence number (`01` / `A.`) or a Lucide icon. Use numbered `.ic` for process steps; use icon `.ic` for conceptual pillars.
+
+</Accordion>
+
+<Accordion title="Tag & Kicker">
+
+Two separate components often used near headings.
+
+**Kicker** — small monospace label above the main heading. Provides the per-page hook:
+
+```html
+<div class="kicker">过去 64 天 · 开发篇</div>
+<div class="h1-zh">一个人，做了什么。</div>
+```
+
+**Tag** — a bordered capsule label. Use in a flex row for a group of tags:
+
+```html
+<div style="display:flex;gap:1.6vw;flex-wrap:wrap">
+  <div class="tag">早上 10 点起床</div>
+  <div class="tag">周二 / 四下午健身</div>
+  <div class="tag">晚上照样看剧 · 玩游戏</div>
+</div>
+```
+
+</Accordion>
+
+<Accordion title="Figure">
+
+**This is the most error-prone component in the template. Read every constraint before using it.**
+
+### Basic structure
+
+```html
+<figure class="tile">
+  <div class="frame-img" style="height:26vh">
+    <img src="图片素材/xxx.png" alt="说明">
+  </div>
+  <figcaption class="frame-cap">
+    <span class="pf">推特 · Twitter</span>
+    <span class="nb">137K</span>
+  </figcaption>
+</figure>
+```
+
+### Key constraints
+
+1. **Always use `height:Nvh` to fix the image height.** Never use `aspect-ratio` inside a grid — it causes containers to expand and images to stack on top of each other.
+   - Recommended sizes: `18vh` (compact strip) / `22vh` (standard grid) / `26vh` (featured) / `28vh` (large hero image)
+
+2. **`object-position:top center` is already set in the CSS.** Only the bottom of the image gets cropped. Never crop the left, right, or top — those areas contain the image's core identity information.
+
+3. **Multi-image grids use inline `display:grid`, not `.grid-3`:**
+   ```html
+   <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1vh 1.2vw">
+     <figure class="tile">...</figure>
+     <figure class="tile">...</figure>
+     <figure class="tile">...</figure>
+   </div>
+   ```
+
+4. **Never use `align-self:end` on a `<figure>`**, even inside a grid column. It moves the image to the cell bottom where browser toolbars obscure it on small screens. To pin adjacent text to the bottom of its column, apply `display:flex; flex-direction:column; justify-content:space-between` to the text column instead.
+
+### Caption variants
+
+```html
+<!-- Standard: name on left, number on right -->
+<figcaption class="frame-cap">
+  <span class="pf">推特 · Twitter</span>
+  <span class="nb">137K</span>
+</figcaption>
+
+<!-- With index number -->
+<figcaption class="frame-cap">
+  <span class="idx">01</span>
+  <span class="pf">AI 润色</span>
+  <span>Polish</span>
+</figcaption>
+```
+
+### Placeholder (design-stage slot)
+
+Use a dashed placeholder when the final image is not yet available:
+
+```html
+<div class="img-slot r-4x3">  <!-- r-4x3 / r-16x9 (default) / r-3x2 / r-1x1 -->
+  <span class="plus">+</span>
+  <span class="label">GitHub 截图位置</span>
+</div>
+```
+
+</Accordion>
+
+<Accordion title="Icons">
+
+**Never use emoji as icons.** Use Lucide icons via CDN — the `<script>` tag is already in `template.html`.
+
+```html
+<i data-lucide="compass" class="ico-lg"></i>       <!-- large icon (pillar use) -->
+<i data-lucide="target" class="ico-md"></i>        <!-- medium icon (list items) -->
+<i data-lucide="check-circle" class="ico-sm"></i>  <!-- small icon (inline use) -->
+```
+
+**Inline icon + text combination:**
+
+```html
+<div class="h3-zh" style="display:flex;align-items:center;gap:.8em">
+  <i data-lucide="target" class="ico-md"></i>
+  判断 — 什么值得写
+</div>
+```
+
+**Icon names by category:**
+
+| Category | Icon names |
+|---|---|
+| Judgment | `compass`, `target`, `crosshair`, `search-check` |
+| Relationship | `share-2`, `users`, `network`, `link`, `handshake` |
+| Brand/quality | `crown`, `gem`, `award`, `star`, `badge-check` |
+| Process | `workflow`, `route`, `arrow-right-left`, `repeat` |
+| Data | `grid-2x2`, `bar-chart-3`, `trending-up`, `activity` |
+| Aesthetic | `palette`, `brush`, `eye`, `sparkles` |
+| Pass/fail | `check-circle`, `x-circle`, `check`, `x` |
+| Direction | `arrow-right`, `arrow-up-right`, `corner-down-right` |
+
+</Accordion>
+
+<Accordion title="Ghost">
+
+Decorative oversized background text at near-invisible opacity. Creates the magazine typographic depth effect.
+
+```html
+<div class="ghost" style="right:-6vw;top:-8vh">BUT</div>
+<div class="ghost" style="left:-8vw;bottom:-18vh;font-style:italic">Harness</div>
+```
+
+- Font size: 34vw. Opacity: 0.06.
+- Common positions: `right:-6vw;top:-8vh` (bleeds off top-right) / `left:-8vw;bottom:-18vh` (bleeds off bottom-left).
+- Content: English words or numerals — chapter numbers (`01` / `02` / `03`) or keywords (`BUT` / `NOW` / `HERE`).
+
+<Warning>
+Any content on a page that uses `.ghost` must have `position:relative;z-index:2` to avoid being painted behind the ghost layer.
+</Warning>
+
+</Accordion>
+
+<Accordion title="Highlight">
+
+An inline highlighter-pen effect for key phrases. On dark themes the highlight is light; on light themes it is dark — the CSS handles both.
+
+```html
+<span class="hi">不是</span>
+<span class="hi">一次性爆发</span>
+```
+
+Use sparingly: only 1–3 words per page. Do not highlight entire sentences or paragraphs.
+
+</Accordion>
+
+</AccordionGroup>

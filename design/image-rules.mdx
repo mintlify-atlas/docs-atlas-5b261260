@@ -1,0 +1,138 @@
+---
+title: "Image guidelines: ratios, placement, and cropping"
+description: "Strict rules for sizing, placing, and cropping images in Magazine Web PPT — the second most common source of layout failures after missing CSS classes."
+---
+
+Image handling is the second most common source of layout failures in Magazine Web PPT, after missing CSS class definitions. The rules here are not stylistic suggestions — they reflect constraints that emerge from the layout engine itself. An image grid using `aspect-ratio` instead of `height:Nvh` will overflow its container. A figure with `align-self:end` in a non-grid parent will fall behind the browser toolbar. These failures are invisible in a code review and only appear at render time, which is why the rules exist as explicit constraints rather than guidelines.
+
+## Standard aspect ratios
+
+Always use a standard ratio. Never copy the original image's native dimensions (such as `aspect-ratio: 2592/1798`) — these produce unpredictable overflow or whitespace across screen sizes. The `object-fit:cover` + `object-position:top center` preset handles any mismatch between the original and the container.
+
+| Scenario | Recommended ratio | HTML attribute |
+|---|---|---|
+| Left-text + right-image (main figure) | 16:10 or 4:3 + max-height:56vh | `aspect-ratio:16/10; max-height:54vh` |
+| Image grid (multi-image comparison) | Fixed height only | `height:26vh` (never `aspect-ratio`) |
+| Small left image + right text | 1:1 or 3:2 | `aspect-ratio:1/1; max-width:40vw` |
+| Full-width hero image | 16:9 | `aspect-ratio:16/9; max-height:64vh` |
+| Lead image + side text (Layout 10) | 3:4 or 1:1 | `aspect-ratio:3/4; max-height:60vh` |
+
+## Cropping rules
+
+The CSS preset in `template.html` applies `object-fit:cover` and `object-position:top center` to all `.frame-img img` elements. This means:
+
+- **Only the bottom is cropped.** The top and sides of every image are always preserved.
+- The top of a screenshot (window title bars, navigation, headers) is never cut.
+- The left and right edges of a photo are never cut.
+
+Never use `align-self:end` on a `<figure>` element. In non-grid containers this property has no effect and the figure falls to the bottom of the document flow, where it is hidden behind the browser toolbar.
+
+## Correct figure structure
+
+The `frame-img` pattern is the standard HTML structure for all images:
+
+```html
+<figure class="tile">
+  <div class="frame-img" style="height:26vh">
+    <img src="images/03-figma.jpg" alt="Figma workspace">
+  </div>
+  <figcaption class="frame-cap">
+    <span class="pf">Figma · 设计稿</span>
+    <span class="nb">v4</span>
+  </figcaption>
+</figure>
+```
+
+The `height:26vh` is set on the wrapper `div`, not on the `img` element. The img fills the wrapper via `object-fit:cover`.
+
+## Grid images: correct vs incorrect
+
+In image grids, `height:Nvh` is mandatory. Using `aspect-ratio` in a grid context causes the figure to expand and push sibling cells out of position.
+
+<CodeGroup>
+```html Correct — fixed height in grid
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1vh 1.2vw">
+  <figure class="tile">
+    <div class="frame-img" style="height:26vh">
+      <img src="images/04-screenshot-a.png" alt="Screenshot A">
+    </div>
+    <figcaption class="frame-cap">
+      <span class="pf">Before</span>
+    </figcaption>
+  </figure>
+  <figure class="tile">
+    <div class="frame-img" style="height:26vh">
+      <img src="images/04-screenshot-b.png" alt="Screenshot B">
+    </div>
+    <figcaption class="frame-cap">
+      <span class="pf">After</span>
+    </figcaption>
+  </figure>
+</div>
+```
+
+```html Incorrect — aspect-ratio overflows grid
+<!-- Never do this in a multi-image grid -->
+<figure class="frame-img" style="aspect-ratio: 16/9">
+  <img src="images/04-screenshot-a.png" alt="Screenshot A">
+</figure>
+```
+</CodeGroup>
+
+The exception: a single hero image outside a grid container may use `aspect-ratio` combined with `max-height`, because the parent container provides a height boundary.
+
+## Placement rules
+
+**Grid containers** — always use one of the standard two-column grid classes. These are defined in `template.html` and pre-calibrated for the slide aspect ratio:
+
+- `.grid-2-7-5` — 7:5 column split (text-heavy layout)
+- `.grid-2-6-6` — equal columns (balanced layout)
+- `.grid-2-8-4` — 8:4 column split (image-accent layout)
+
+**Left column alignment** — to pin a callout or attribution to the bottom of the left column while keeping the title at the top, apply flex layout with space-between to the left column, not to the figure:
+
+```html
+<div style="display:flex;flex-direction:column;justify-content:space-between">
+  <div class="h1-zh">主标题</div>
+  <div class="callout">引用框贴底</div>
+</div>
+```
+
+**Right column** — set `align-items:start` on the grid container (already the template default). Do not add `align-self:end` to the `<figure>`.
+
+## Image file naming
+
+Use the pattern `{page}-{semantic}.{ext}`:
+
+- `01-cover.jpg`
+- `03-figma.jpg`
+- `05-dashboard.png`
+
+Page numbers should be zero-padded for sort order. Semantic names must be English, short, and specific to the content. Keeping the same filename when replacing an image means no path changes in the HTML are required.
+
+## File size and format recommendations
+
+- Minimum width: 1600px (prevents blurring on large screens)
+- Format: JPG for photos and screenshots, PNG for UI elements with transparency
+- Total size for all images in a deck: under 10MB (larger files degrade swipe performance)
+
+## Placeholder slots
+
+During the design phase, before images are available, use `.img-slot` placeholders to hold layout space. Four aspect ratio variants are available:
+
+```html
+<div class="img-slot r-4x3">
+  <span class="plus">+</span>
+  <span class="label">GitHub 截图位置</span>
+</div>
+```
+
+Available variants: `r-4x3` / `r-16x9` (default) / `r-3x2` / `r-1x1`.
+
+<Warning>
+Never use `align-self:end` on a `<figure>`. In non-grid containers it has no effect and the image falls to the bottom of the document flow, hidden behind the browser toolbar. To align a callout to the bottom of the left column, apply `flex-direction:column; justify-content:space-between` to the left column element instead.
+</Warning>
+
+<Tip>
+When no images are available yet, use `.img-slot` placeholders. Discuss image availability with users early — Layouts 4, 5, and 10 cannot properly validate their visual result without actual images in place.
+</Tip>

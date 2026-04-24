@@ -1,0 +1,91 @@
+{
+  "projectType": "general",
+  "projectName": "Magazine Web PPT Skill",
+  "projectDescription": "An AI agent skill that generates single-file HTML horizontal-swipe presentations in a magazine × e-ink aesthetic, featuring WebGL fluid backgrounds, serif/sans/mono typography hierarchy, and 10 ready-to-use slide layouts.",
+  "theme": "willow",
+  "primaryColor": "#7c7c7c",
+  "lightColor": "#050505",
+  "darkColor": "#bdbdbd",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Guide",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "introduction",
+              "installation",
+              "quickstart"
+            ]
+          },
+          {
+            "group": "Workflow",
+            "pages": [
+              "workflow/requirements",
+              "workflow/template-setup",
+              "workflow/themes",
+              "workflow/content-and-layouts",
+              "workflow/self-check-and-preview"
+            ]
+          },
+          {
+            "group": "Design Principles",
+            "pages": [
+              "design/aesthetic",
+              "design/typography",
+              "design/image-rules"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Reference",
+        "groups": [
+          {
+            "group": "Layouts",
+            "pages": [
+              "reference/layouts/overview",
+              "reference/layouts/hero-cover",
+              "reference/layouts/act-divider",
+              "reference/layouts/big-numbers",
+              "reference/layouts/quote-image",
+              "reference/layouts/image-grid",
+              "reference/layouts/pipeline",
+              "reference/layouts/hero-question",
+              "reference/layouts/big-quote",
+              "reference/layouts/before-after",
+              "reference/layouts/lead-image"
+            ]
+          },
+          {
+            "group": "Components & Themes",
+            "pages": [
+              "reference/components",
+              "reference/themes",
+              "reference/checklist"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "Single-file HTML output — no build tools or server required, open directly in browser",
+    "WebGL fluid/dispersion backgrounds that animate on hero slides and fade on content slides",
+    "Three-tier typography system: serif headings (Noto Serif SC + Playfair Display), sans-serif body (Noto Sans SC + Inter), monospace metadata (IBM Plex Mono)",
+    "Horizontal swipe navigation with keyboard arrows, scroll wheel, touch swipe, dot indicators, and ESC index view",
+    "5 curated preset color themes (Ink Classic, Indigo Porcelain, Forest Ink, Kraft Paper, Dune) — no custom hex values allowed",
+    "10 ready-to-paste slide layout skeletons covering cover, act dividers, data stats, quote+image, image grid, pipeline, hero question, big quote, before/after, and lead image",
+    "Structured 6-step AI workflow with requirement clarification, class pre-flight checks, and theme rhythm planning",
+    "Quality checklist with P0/P1/P2/P3 severity tiers capturing real iteration lessons"
+  ],
+  "publicApiSurface": [
+    "SKILL.md — agent skill entrypoint with 6-step workflow",
+    "assets/template.html — seed HTML file with CSS, WebGL shaders, and navigation JS pre-configured",
+    "references/layouts.md — 10 slide layout HTML skeletons",
+    "references/themes.md — 5 :root CSS variable presets for color themes",
+    "references/components.md — component usage reference (Typography, Chrome/Foot, Callout, Stat, Platform, Rowline, Pillar, Figure, Icons, Ghost, Highlight)",
+    "references/checklist.md — P0–P3 quality checklist for self-review"
+  ]
+}

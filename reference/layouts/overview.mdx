@@ -1,0 +1,84 @@
+---
+title: "Slide layout reference overview"
+description: "All 10 paste-ready slide layout skeletons: hero covers, act dividers, data grids, pipelines, image grids, quotes, before/after, and more."
+---
+
+The Magazine Web PPT skill ships with 10 layout skeletons that cover every common slide type in an editorial-style deck: opening covers, act dividers, data grids, narrative slides with images, multi-image comparisons, workflow pipelines, dramatic question pages, key-quote slides, before/after comparisons, and information-dense text-plus-image pages. Every layout is a complete, paste-ready `<section>` block — replace the copy and image paths and you're done.
+
+## Pre-flight reminder
+
+Before you use any layout, confirm that every CSS class it references exists in `template.html`. All classes (`h-hero`, `h-xl`, `h-sub`, `h-md`, `lead`, `meta-row`, `stat-card`, `grid-2-7-5`, `pipeline`, `frame-img`, `callout`, and the rest) are predefined in the `<style>` block of `assets/template.html`. Do not invent new class names — if you need one-off overrides, use inline `style="..."`. For guidance on the full aesthetic system see [Aesthetic](/design/aesthetic); for how layouts fit into a full deck workflow see [Content and layouts](/workflow/content-and-layouts).
+
+## All 10 layouts at a glance
+
+| Layout | Name | Use case | Default theme |
+|--------|------|----------|---------------|
+| 1 | Hero cover | First slide of every deck | `hero dark` |
+| 2 | Act divider | Transition between major sections | `hero dark` / `hero light` alternating |
+| 3 | Big numbers | Hard data that creates immediate impact | `light` |
+| 4 | Quote + Image | Key statement paired with visual evidence | `light` / `dark` alternating |
+| 5 | Image grid | Screenshot evidence or multi-image comparisons | `light` |
+| 6 | Pipeline | Sequential workflows or phased plans | `light` |
+| 7 | Hero question | Dramatic act endings and thought-provoking closes | `hero dark` |
+| 8 | Big quote | Memorable attributed phrases and key takeaways | `dark` preferred |
+| 9 | Before / After | Old vs new contrasts and paradigm shifts | `light` |
+| 10 | Lead image + side text | Information-dense pages with detailed text and an image | `light` / `dark` alternating |
+
+<CardGroup cols={2}>
+  <Card title="Hero Cover" icon="star" href="/reference/layouts/hero-cover">
+    The opening slide. Sets the aesthetic tone with a WebGL background and a large serif heading.
+  </Card>
+  <Card title="Act Divider" icon="bookmark" href="/reference/layouts/act-divider">
+    Minimal chapter-transition slide. Alternates hero light / dark to create visual rhythm.
+  </Card>
+  <Card title="Big Numbers" icon="hash" href="/reference/layouts/big-numbers">
+    Stat-card grid for presenting impactful data metrics with large numbers.
+  </Card>
+  <Card title="Quote + Image" icon="quote-left" href="/reference/layouts/quote-image">
+    Two-column layout: key statement on the left, supporting image on the right.
+  </Card>
+  <Card title="Image Grid" icon="grid" href="/reference/layouts/image-grid">
+    3×2 grid for screenshot evidence, platform proof, or visual comparisons.
+  </Card>
+  <Card title="Pipeline" icon="arrow-right" href="/reference/layouts/pipeline">
+    Numbered-step workflow layout with group labels and multiple pipeline sections.
+  </Card>
+  <Card title="Hero Question" icon="circle-question" href="/reference/layouts/hero-question">
+    Dramatic suspense slide for act closings and thought-provoking questions.
+  </Card>
+  <Card title="Big Quote" icon="comment-dots" href="/reference/layouts/big-quote">
+    Large blockquote layout for delivering memorable key phrases with attribution.
+  </Card>
+  <Card title="Before / After" icon="arrows-left-right" href="/reference/layouts/before-after">
+    Two-column comparison showing old vs new approaches or competing paradigms.
+  </Card>
+  <Card title="Lead Image + Side Text" icon="image" href="/reference/layouts/lead-image">
+    Information-dense layout with a large text column on the left and a portrait image on the right.
+  </Card>
+</CardGroup>
+
+## Grid reference
+
+All grid classes are predefined in `template.html` with `gap: 3vw 4vh` by default (overridable per instance).
+
+| Class | Ratio | Use |
+|-------|-------|-----|
+| `.grid-2-6-6` | 6:6 (1:1) | Equal two-column split |
+| `.grid-2-7-5` | 7:5 | Text-dominant column + supporting image |
+| `.grid-2-8-4` | 8:4 (2:1) | Large body text + small image or data |
+| `.grid-3` | 1:1:1 | Three equal columns (case studies, screenshots) |
+| `.grid-3-3` | 3×2 | Six-image matrix |
+| `.grid-6` | 3×2 | Six stat cards |
+
+## Page rhythm recommendation
+
+For a 25–30 page deck, hero pages and non-hero pages should alternate at roughly a **2–3 : 1 ratio** — no more than 3 consecutive non-hero pages, and no more than 2 consecutive hero pages. The recommended arc:
+
+1. **Hero Cover** (page 1)
+2. **Act Divider** (act opening — `hero light` or `hero dark`)
+3. **Big Numbers** (hard data, immediate impact)
+4. **Quote + Image** (narrative hook or identity contrast)
+5. **Image Grid** (evidence support)
+6. **Hero Question** (act close, suspense)
+7. … repeat structure for Act II, Act III …
+8. **Hero Close** (final page — question or acknowledgment)

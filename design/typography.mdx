@@ -1,0 +1,99 @@
+---
+title: "Typography system: serif, sans-serif, and mono"
+description: "Magazine Web PPT uses a strict three-tier font hierarchy — serif for emphasis, sans-serif for density, mono for rhythm — that must not be mixed."
+---
+
+Typography is the single most important rule in this skill. The three font families — serif, sans-serif, and monospace — each have a fixed role, and that role does not change based on personal preference or convenience. A deck where a sans-serif class is used for a main heading, or where body text is set in serif, will look broken immediately. Every font assignment in `template.html` exists for a reason; mixing them undoes the aesthetic in one line.
+
+## Three-tier font system overview
+
+The system has three tiers, each mapped to a distinct information function:
+
+- **Serif** (`--serif-zh`, `--serif-en`): visual emphasis — titles, key quotes, large numbers. These are the elements that carry the deck's voice.
+- **Sans-serif** (`--sans-zh`): information density — body text, descriptions, pipeline step names, anything that needs to be read rather than registered at a glance.
+- **Monospace** (`--mono`): decorative rhythm — kickers, metadata, footer labels, the chrome bar. These elements frame content without competing with it.
+
+## Typography class reference
+
+The full class set defined in `template.html`:
+
+| Class | Use | Font | Size |
+|---|---|---|---|
+| `.display` | Hero super-large English headings | Playfair Display 700 | 11vw |
+| `.display-zh` | Hero super-large Chinese headings | Noto Serif SC 700 | 7.8vw |
+| `.h1-zh` | Page primary title | Noto Serif SC 700 | 4.6vw |
+| `.h2-zh` | Subtitle | Noto Serif SC 600 | 3.2vw |
+| `.h3-zh` | Pipeline step title | Noto Serif SC 500 | 1.9vw |
+| `.lead` | Lead paragraph (larger than body) | Noto Serif SC 400 | 1.9vw |
+| `.body-zh` | Body text and descriptions (non-serif) | Noto Sans SC 400 | 1.22vw |
+| `.body-serif` | Body text (serif variant) | Noto Serif SC 400 | 1.3vw |
+| `.kicker` | Section hint above titles | IBM Plex Mono | 12px uppercase |
+| `.meta` | Metadata labels | IBM Plex Mono | 0.88vw uppercase |
+| `.big-num` | Giant numbers (stat slides) | Playfair Display 800 | 10vw |
+| `.mid-num` | Medium numbers | Playfair Display 700 | 5.5vw |
+
+## CSS variable names
+
+Each font family is referenced through a CSS custom property. These are set in the `:root` block of `template.html` and inherited by all components:
+
+```css
+--serif-zh: 'Noto Serif SC', serif;
+--serif-en: 'Playfair Display', serif;
+--sans-zh:  'Noto Sans SC', 'Inter', sans-serif;
+--mono:     'IBM Plex Mono', monospace;
+```
+
+Do not override these variables inline. All theme-aware color transitions depend on the existing CSS architecture.
+
+## Emphasis techniques
+
+Two inline emphasis patterns are built into the template:
+
+**English word in Playfair italic** — wrapping an English word in `<em class="en">` renders it in Playfair Display italic. This works especially well for brand names, technical terms, or a single foreign word inside a Chinese sentence:
+
+```html
+<em class="en">Thin Harness, Fat Skills.</em>
+```
+
+**Opacity fade for rhythm** — reducing opacity on the tail of a heading creates a visual pause without changing font size:
+
+```html
+<em style="opacity:.65">后半句短语</em>
+```
+
+Both techniques are decorative. Use them on individual words or short phrases, not on full sentences.
+
+## Heading size rules
+
+Large headings have strict size and character-count constraints. Exceeding either causes single-character line breaks — the most common visible defect in generated decks.
+
+| Class | Max size | Max Chinese characters | Note |
+|---|---|---|---|
+| `h-hero` (largest) | 10vw | 5 characters | Requires `white-space:nowrap` |
+| `h-xl` (second) | 6vw–7vw | 8–10 characters | Manual `<br>` for long titles |
+
+For headings longer than five characters at `h-hero` size, use a manual line break rather than relying on automatic wrapping:
+
+```html
+<div class="h-hero" style="white-space:nowrap">我不是<br>程序员。</div>
+```
+
+## Common mistakes
+
+**Sans-serif main headings** — if large headings display in a non-serif font, the `h-hero` class is missing from `template.html`'s `<style>` block. This is the most frequent cause of layout failures. The checklist pre-flight step (Step 3.0) catches this before any slide code is written.
+
+**Emoji instead of Lucide icons** — emoji break the editorial aesthetic immediately. All icons must come from Lucide via CDN:
+
+```html
+<i data-lucide="target" class="ico-md"></i>
+```
+
+## Google Fonts CDN
+
+All fonts are pre-loaded in `template.html` through Google Fonts CDN links. No additional setup is required. The fonts load in this order: Playfair Display → Noto Serif SC → Noto Sans SC → IBM Plex Mono.
+
+Do not add `@import` rules for additional fonts. The five permitted themes are designed around the existing four families; introducing a fifth family breaks the visual consistency.
+
+<Warning>
+If your large headings display in sans-serif, the `h-hero` class is likely missing from `template.html`'s `<style>` block. Check with the class pre-flight step: read `assets/template.html` and confirm every class used in your layouts is defined before writing any slide code.
+</Warning>

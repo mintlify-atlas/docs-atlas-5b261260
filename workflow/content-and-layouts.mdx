@@ -1,0 +1,129 @@
+---
+title: "Filling slides with content using layout skeletons"
+description: "Run the class pre-flight check, plan your theme rhythm table, then pick from 10 ready-to-paste layout skeletons — never write slide HTML from scratch."
+---
+
+Filling slides with content is the most consequential step in the workflow, and the most common source of visual failures. The rule is absolute: **never write slide HTML from scratch**. Every slide must be built by copying one of the 10 layout skeletons from the layouts reference and replacing the placeholder text and image paths. Two things must be completed before copying any skeleton: the class pre-flight check and the theme rhythm plan.
+
+## Class pre-flight check
+
+The layout skeletons use dozens of CSS class names that are only defined inside `assets/template.html`. If those classes are absent when the browser renders the file, it silently falls back to browser defaults — large headings render in sans-serif, stat cards collapse into a single column, pipeline steps stack into a heap, and images slide to the very bottom of the page.
+
+**Before writing any slide code**, read `assets/template.html` through to the end of the `<style>` block, then verify that every class you plan to use is defined there.
+
+The classes most frequently found to be missing are:
+
+```
+h-hero        h-xl          h-sub         h-md
+lead          kicker        meta-row
+stat-card     stat-label    stat-nb       stat-unit     stat-note
+pipeline-section  pipeline-label  pipeline
+step          step-nb       step-title    step-desc
+grid-2-7-5    grid-2-6-6    grid-2-8-4    grid-3-3
+grid-6        grid-3        grid-4
+frame         frame-img     img-cap
+callout       callout-src
+chrome        foot
+```
+
+If a class is missing, add its definition to the `<style>` block in `template.html` (the copied version, not the original). Do not write inline styles on individual slides as a workaround — that creates maintenance debt across every page that uses the layout.
+
+## Theme rhythm planning
+
+Theme rhythm must be planned as a table before any skeleton is pasted. Each `<section>` element takes one of four theme classes: `light`, `dark`, `hero light`, or `hero dark`. The JavaScript navigation system reads these classes to decide which WebGL canvas to show and whether to apply a light or dark body state. Writing only `hero` without a light/dark modifier, or inventing custom class names, causes the theme switching to fall back incorrectly.
+
+**Per-layout theme defaults:**
+
+| Layout | Default theme | Reason |
+|--------|--------------|--------|
+| 1. Hero Cover | `hero dark` | Maximum opening impact on a dark background |
+| 2. Act Divider | `hero dark` and `hero light` must alternate | Breathing rhythm between acts |
+| 3. Big Numbers | `light` | Numbers need a paper-white base; occasional `dark` on repeat |
+| 4. Quote + Image | `light` / `dark` alternating | Primary body rhythm driver |
+| 5. Image Grid | `light` | Screenshots require a bright background |
+| 6. Pipeline | `light` | Process diagrams need clarity |
+| 7. Hero Question | `hero dark` | Strong visual impact by default |
+| 8. Big Quote | `dark` preferred, occasional `light` | Dark base creates ceremony for key quotes |
+| 9. Before / After | `light` | Dual columns need maximum readability |
+| 10. Lead Image + Side Text | `light` / `dark` alternating | Rhythm |
+
+**Hard rules — these are enforced, not suggestions:**
+
+- No 3 consecutive pages with the same theme class (including `light` stacking and `dark` stacking)
+- Any deck with 8 or more pages must include at least 1 `hero dark` page and at least 1 `hero light` page
+- A deck cannot consist entirely of `light` body pages — at least one `dark` body page is required for visual breathing room
+- Insert one hero page every 3–4 regular pages (cover, act divider, question page, or big quote)
+
+**8-page rhythm template (copy and adapt):**
+
+| Page | Theme | Layout | Notes |
+|------|-------|--------|-------|
+| 1 | `hero dark` | Hero Cover | Opening |
+| 2 | `light` | Big Numbers | Data impact |
+| 3 | `dark` | Quote + Image | Contrast / story |
+| 4 | `light` | Pipeline | Process |
+| 5 | `hero light` | Act Divider | Breathing point |
+| 6 | `dark` | Quote + Image or Big Quote | Depth |
+| 7 | `hero dark` | Hero Question | Cliffhanger |
+| 8 | `light` | Big Quote / Close | Wrap-up |
+
+Plan this table and get it aligned before writing a single line of slide code. Skipping this step results in all-`light` decks with no visual rhythm.
+
+## Layout skeletons
+
+<CardGroup cols={2}>
+  <Card title="Hero Cover" href="/reference/layouts/hero-cover">
+    The opening slide. Uses `hero dark`, a large `h-hero` heading, a `lead` paragraph, and a `meta-row` for speaker attribution. Sets the visual tone for the entire deck.
+  </Card>
+  <Card title="Act Divider" href="/reference/layouts/act-divider">
+    Chapter opener between major sections. Extremely minimal — kicker, large heading, one lead line. Alternate between `hero dark` and `hero light` across acts.
+  </Card>
+  <Card title="Big Numbers" href="/reference/layouts/big-numbers">
+    Data impact page. Uses a `grid-6` (3×2) of `stat-card` elements with `stat-label`, `stat-nb`, `stat-unit`, and `stat-note`. Keep numbers to 2–3 characters; use K/M abbreviations.
+  </Card>
+  <Card title="Quote + Image" href="/reference/layouts/quote-image">
+    Left text column with heading and `callout` block, right image column. Uses `grid-2-7-5`. Left column uses flex column with `justify-content:space-between` to pin the callout to the bottom.
+  </Card>
+  <Card title="Image Grid" href="/reference/layouts/image-grid">
+    Multi-image comparison or screenshot evidence. Uses `grid-3-3` (3×2). Every `frame-img` must use `height:26vh` — never `aspect-ratio` inside a grid.
+  </Card>
+  <Card title="Pipeline" href="/reference/layouts/pipeline">
+    Workflow or process visualization. Groups steps with `pipeline-section` and `pipeline-label`. Each step uses the fixed `step-nb` → `step-title` → `step-desc` structure. Maximum 5 steps per pipeline row.
+  </Card>
+  <Card title="Hero Question" href="/reference/layouts/hero-question">
+    Suspense or section close. Uses `hero dark`, a large multi-line question in `h-hero`, and a single `lead` line that breaks the tension. Maximum whitespace — one question only.
+  </Card>
+  <Card title="Big Quote" href="/reference/layouts/big-quote">
+    Serif key quote page. The `blockquote` uses inline `font-size:5.8vw` (not `h-hero`). Follow with an English translation at `opacity:.65` and a `meta-row` for attribution.
+  </Card>
+  <Card title="Before / After" href="/reference/layouts/before-after">
+    Side-by-side paradigm comparison. Uses `grid-2-6-6` (1:1 split). Left column at `opacity:.55` for the "old" state, right column at full opacity for the "new" state.
+  </Card>
+  <Card title="Lead Image + Side Text" href="/reference/layouts/lead-image">
+    Information-dense layout with large text block and supporting image. Uses `grid-2-8-4` (8:4 ratio). Left column contains kicker → heading → lead → body → callout stacked. Right image is portrait 3:4.
+  </Card>
+</CardGroup>
+
+## Image ratio rules
+
+Use only the standard ratios below. Never copy an original image's pixel dimensions as an `aspect-ratio` value.
+
+| Context | Recommended ratio | Implementation |
+|---------|------------------|----------------|
+| Quote + Image main image | 16:10 or 4:3 | `aspect-ratio:16/10; max-height:56vh` |
+| Image Grid (multi-image) | Fixed height | `height:26vh` — do not use `aspect-ratio` |
+| Small left image + right text | 1:1 or 3:2 | `aspect-ratio:1/1; max-width:40vw` |
+| Full-screen hero visual | 16:9 | `aspect-ratio:16/9; max-height:64vh` |
+| Lead Image supporting figure | 3:2 or 3:4 | `aspect-ratio:3/4; max-height:60vh` |
+
+Images must be wrapped in `<figure class="frame-img">`. The template CSS sets `object-fit:cover` and `object-position:top center` on all images inside `.frame-img`, which means only the bottom of the image is cropped — the top and sides are always fully visible.
+
+Do not use `align-self:end` on image elements. To align a callout to the bottom of a left column, apply `display:flex; flex-direction:column; justify-content:space-between` to the left column itself and leave the right image column untouched.
+
+<Warning>
+  Use `height:Nvh` (not `aspect-ratio`) for images inside grids. Using `aspect-ratio` inside a grid cell causes the cell to expand to match the image's intrinsic proportions, which will overflow the grid container and push subsequent slides out of position.
+</Warning>
+
+<Tip>
+  Run `grep 'class="slide' index.html` after generating all slides to list every page's theme class in order. Read through the output visually to confirm the rhythm has enough variation before delivering the deck.
+</Tip>

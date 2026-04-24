@@ -1,0 +1,137 @@
+---
+title: "Choosing a color theme for your presentation"
+description: "Choose one of 5 preset color themes and replace six CSS variables. No custom hex values — presets protect the magazine e-ink contrast balance."
+---
+
+The Magazine Web PPT skill ships with 5 hand-tuned color presets. These presets exist to protect the "electronic magazine × e-ink" aesthetic: a single incorrect color can undermine the carefully balanced contrast ratios, the WebGL shader blending, and the `currentColor`-driven icon and border system. For this reason, **no custom hex values are accepted** — the workflow requires choosing exactly one preset and applying it completely.
+
+## The 5 themes
+
+<Tabs>
+  <Tab title="Ink Classic">
+    **墨水经典 (Ink Classic)** — the default. Safe for any content type.
+
+    **Best fit:** General sharing, commercial launches, tech products, any situation where you are unsure which theme to choose.
+
+    **Tone:** Pure ink black on warm off-white. The strongest magazine feel — closest to *Monocle*, *Apricot*, and *A Book Apart*.
+
+    ```css
+    --ink: #0a0a0b;
+    --ink-rgb: 10,10,11;
+    --paper: #f1efea;
+    --paper-rgb: 241,239,234;
+    --paper-tint: #e8e5de;
+    --ink-tint: #18181a;
+    ```
+  </Tab>
+
+  <Tab title="Indigo Porcelain">
+    **靛蓝瓷 (Indigo Porcelain)**
+
+    **Best fit:** Technology, research, data presentations, engineering culture, deep-content technical conferences.
+
+    **Tone:** Deep indigo on porcelain white. Calm, rational, and authoritative — like an academic journal or blue-and-white porcelain.
+
+    ```css
+    --ink: #0a1f3d;
+    --ink-rgb: 10,31,61;
+    --paper: #f1f3f5;
+    --paper-rgb: 241,243,245;
+    --paper-tint: #e4e8ec;
+    --ink-tint: #152a4a;
+    ```
+  </Tab>
+
+  <Tab title="Forest Ink">
+    **森林墨 (Forest Ink)**
+
+    **Best fit:** Nature, sustainability, culture, nonfiction content, outdoor brands, environmental topics.
+
+    **Tone:** Deep forest green on ivory. Grounded and breathable — like a vintage issue of *National Geographic*.
+
+    ```css
+    --ink: #1a2e1f;
+    --ink-rgb: 26,46,31;
+    --paper: #f5f1e8;
+    --paper-rgb: 245,241,232;
+    --paper-tint: #ece7da;
+    --ink-tint: #253d2c;
+    ```
+  </Tab>
+
+  <Tab title="Kraft Paper">
+    **牛皮纸 (Kraft Paper)**
+
+    **Best fit:** Nostalgia, humanities, reading, history, literary sharing, independent magazines, handcraft brands.
+
+    **Tone:** Deep brown on warm buff. Warm and era-appropriate — like a kraft envelope or an old notebook.
+
+    ```css
+    --ink: #2a1e13;
+    --ink-rgb: 42,30,19;
+    --paper: #eedfc7;
+    --paper-rgb: 238,223,199;
+    --paper-tint: #e0d0b6;
+    --ink-tint: #3a2a1d;
+    ```
+  </Tab>
+
+  <Tab title="Dune">
+    **沙丘 (Dune)**
+
+    **Best fit:** Art, design, fashion, creative presentations, gallery handbooks, aesthetics-first private salons.
+
+    **Tone:** Charcoal on sand. Restrained, refined, and neutral — like a desert dusk or an architectural design catalog.
+
+    ```css
+    --ink: #1f1a14;
+    --ink-rgb: 31,26,20;
+    --paper: #f0e6d2;
+    --paper-rgb: 240,230,210;
+    --paper-tint: #e3d7bf;
+    --ink-tint: #2d2620;
+    ```
+  </Tab>
+</Tabs>
+
+## How to apply a theme
+
+<Steps>
+  <Step title="Identify your content type">
+    Use the recommendation table below to match your content to a theme. If you are unsure, default to Ink Classic.
+  </Step>
+  <Step title="Open template.html">
+    Open the copied `项目/XXX/ppt/index.html` (not the original `assets/template.html`) in your editor.
+  </Step>
+  <Step title="Find the :root{} block">
+    The `:root{` block is near the top of the `<style>` section. Locate the six lines annotated with "主题色" (theme color) comments.
+  </Step>
+  <Step title="Replace the 6 theme lines">
+    Copy the full CSS block for your chosen theme from the tab above and replace those six variable declarations. Do not change anything else in the `:root{}` block.
+  </Step>
+  <Step title="Verify no custom colors elsewhere">
+    Do a global search for `#` (hex color literals) in the file. Any hits outside of the `:root{}` block are a signal that the stylesheet has drifted from the variable-driven system and should be corrected.
+  </Step>
+</Steps>
+
+## Theme rules
+
+- **One theme per deck.** Do not switch themes partway through a presentation.
+- **No mixing.** Do not take `--ink` from Ink Classic and `--paper` from Dune — the result will look wrong.
+- **No custom hex values.** If a user provides a specific hex color, politely decline and present the 5 presets for selection. Protecting the aesthetic is more important than giving freedom here.
+
+After selecting a theme, record the choice in the project's `项目记录.md` so that future iteration sessions stay consistent.
+
+## Content-to-theme recommendation
+
+| If your content is... | Recommended theme |
+|-----------------------|-------------------|
+| General / unsure / first time | Ink Classic (墨水经典) |
+| AI / tech / product launch | Indigo Porcelain (靛蓝瓷) |
+| Culture / industry observation / nonfiction | Forest Ink (森林墨) |
+| Book review / lifestyle / humanities | Kraft Paper (牛皮纸) |
+| Design / art / brand | Dune (沙丘) |
+
+<Warning>
+  Do not mix variables from different themes — for example, using `--ink` from Ink Classic together with `--paper` from Dune. The contrast ratios, WebGL shader colors, and `currentColor`-driven borders are tuned as a system. Mixing breaks the system visually and there is no reliable way to predict which elements will look wrong until you see it in a browser.
+</Warning>

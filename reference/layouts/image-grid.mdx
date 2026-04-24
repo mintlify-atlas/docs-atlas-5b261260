@@ -1,0 +1,75 @@
+---
+title: "Layout 5: Image grid (multi-image comparison)"
+description: "A 3×2 image grid for presenting screenshot evidence, platform proof, or visual comparisons — every frame must use height:Nvh to prevent grid overflow."
+---
+
+The image grid layout is for presenting multiple screenshots or images as visual evidence. Six images in a 3×2 arrangement (`.grid-3-3`) communicate breadth and scale at a glance — ideal for platform proof (showing follower counts across six networks), product screenshots, or before/after visual comparisons. Use a light background so screenshots read clearly against the slide.
+
+**Default theme:** `light` (screenshots need a bright background for maximum legibility)
+
+## HTML skeleton
+
+```html
+<section class="slide light">
+  <div class="chrome">
+    <div>平台粉丝实证</div>
+    <div>Act I / Ops · 05 / 27</div>
+  </div>
+  <div class="frame" style="padding-top:5vh">
+    <div class="kicker">Proof · 粉丝实证</div>
+    <h2 class="h-xl">10 个平台 · 6 张截图</h2>
+
+    <div class="grid-3-3" style="margin-top:4vh">
+      <figure class="frame-img" style="height:26vh">
+        <img src="images/weibo.png" alt="微博 289K">
+        <figcaption class="img-cap">微博 · 289K</figcaption>
+      </figure>
+      <figure class="frame-img" style="height:26vh">
+        <img src="images/twitter.png" alt="推特 137K">
+        <figcaption class="img-cap">推特 · 137K</figcaption>
+      </figure>
+      <figure class="frame-img" style="height:26vh">
+        <img src="images/wechat.png" alt="公众号 96K">
+        <figcaption class="img-cap">公众号 · 96K</figcaption>
+      </figure>
+      <figure class="frame-img" style="height:26vh">
+        <img src="images/jike.png" alt="即刻 26K">
+        <figcaption class="img-cap">即刻 · 26K</figcaption>
+      </figure>
+      <figure class="frame-img" style="height:26vh">
+        <img src="images/xhs.png" alt="小红书 19K">
+        <figcaption class="img-cap">小红书 · 19K</figcaption>
+      </figure>
+      <figure class="frame-img" style="height:26vh">
+        <img src="images/douyin.png" alt="抖音 10K">
+        <figcaption class="img-cap">抖音 · 10K</figcaption>
+      </figure>
+    </div>
+  </div>
+  <div class="foot">
+    <div>截图时间 · 2026.04</div>
+    <div>Page 05 · 粉丝实证</div>
+  </div>
+</section>
+```
+
+## Critical rule: use `height:Nvh`, never `aspect-ratio`
+
+Every `.frame-img` in a grid **must** use a fixed `height:Nvh` value (e.g. `height:26vh`) instead of `aspect-ratio`. This is the most important rule for this layout.
+
+When you use `aspect-ratio` inside a CSS grid cell, the browser calculates the height from the cell width — but grid cells can be unpredictably wide, causing images to blow past the viewport height and push the grid off-screen. A fixed `height:26vh` constrains each image to exactly 26% of the viewport height regardless of screen size, keeping the 3×2 matrix contained within a single slide.
+
+The `.frame-img` class already applies `object-fit:cover + object-position:top center` to all contained `<img>` elements, so images crop from the bottom only — the top of each screenshot (the most informative area) is always visible.
+
+## Grid class options
+
+| Class | Layout | Use when |
+|-------|--------|----------|
+| `.grid-3-3` | 3×2 (6 images) | Most common — platform proof, full evidence sets |
+| `.grid-3` | 3×1 (3 images) | Lighter evidence — three key screenshots |
+
+## Image count options
+
+- **6 images**: use `.grid-3-3` — fills the grid completely, no empty cells
+- **4 images**: use `.grid-3-3` but leave two cells empty, or use `.grid-4` for a 2×2 layout
+- **3 images**: use `.grid-3` for a single-row presentation with more breathing room per image

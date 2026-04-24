@@ -1,0 +1,58 @@
+---
+title: "Layout 7: Hero question (suspense close)"
+description: "Maximum-whitespace hero slide for dramatic act endings: one large serif question, an optional lead line to break the suspense, hero dark by default."
+---
+
+The hero question layout is for dramatic pauses, act closings, and thought-provoking questions that challenge the audience to think rather than receive information. It follows the same hero structure as Layout 1 and Layout 2, but the entire slide is built around a single question — no data, no image, no bullet points. The question should be uncomfortable enough that the audience genuinely needs the next slide to resolve it.
+
+**Default theme:** `hero dark`
+
+## HTML skeleton
+
+```html
+<section class="slide hero dark">
+  <div class="chrome">
+    <div>留给你的问题</div>
+    <div>24 / 27</div>
+  </div>
+  <div class="frame" style="display:grid; gap:8vh; align-content:center; min-height:80vh">
+    <div class="kicker">The Question</div>
+    <h1 class="h-hero" style="font-size:7vw; line-height:1.15">
+      你的公司里，<br>
+      哪些岗位本来就<br>
+      不该由人来做？
+    </h1>
+    <p class="lead" style="max-width:50vw">
+      这个问题，不是技术问题，是架构问题。
+    </p>
+  </div>
+  <div class="foot">
+    <div>Page 24 · The Question</div>
+    <div>— · —</div>
+  </div>
+</section>
+```
+
+## Design rule: maximum whitespace, minimum content
+
+Place only one question on this layout — never add a second question, a bullet list, or an image. The power of the slide comes from the emptiness around the text. The `gap:8vh` between the kicker, heading, and lead paragraph amplifies that emptiness.
+
+## Font sizing
+
+`h-hero` font size should be adjusted based on the length of the question:
+
+| Question length | Recommended `font-size` |
+|-----------------|------------------------|
+| 1 line | `10vw` (default) |
+| 2 lines | `8.5vw` |
+| 3 lines | `7vw` (as in the skeleton) |
+
+Use `<br>` tags to control semantic line breaks — break at natural phrase boundaries in the question, not arbitrarily. Never let the browser wrap automatically on a hero question slide.
+
+## Breaking the suspense
+
+The optional `p.lead` after the question is your "point-break" — a short sentence that reframes or sharpens the question so the audience knows what to think about on the next slide. Keep it to one line. If the question is strong enough to stand alone, omit the lead entirely.
+
+## When to use
+
+Use the hero question at the end of a major act to close with suspense, or as the penultimate slide of the deck before the final takeaway. Do not use it mid-act — the dramatic weight of a full hero dark slide will break the narrative flow rather than punctuate it.

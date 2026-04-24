@@ -1,0 +1,139 @@
+---
+title: "Color theme presets: all 5 themes with CSS variables"
+description: "All 5 Magazine Web PPT color presets with CSS variables and best-fit scenarios. Custom hex values are not accepted — presets protect the aesthetic."
+---
+
+Magazine Web PPT ships with exactly five preset color themes. There are no custom hex values — the presets exist because color balance in the magazine × e-ink aesthetic is extremely sensitive. Swapping even one variable from a different theme breaks the contrast ratios and warmth tuning that make the deck feel cohesive.
+
+## How to apply a theme
+
+<Steps>
+  <Step title="Open your copied index.html">
+    Open the copied `项目/XXX/ppt/index.html` (not the original `assets/template.html`) in your editor and locate the `<style>` block.
+  </Step>
+  <Step title="Find the :root block">
+    At the top of the `<style>` block, find the `:root {` declaration. The theme variables are annotated with a comment marking them as the theme color section.
+  </Step>
+  <Step title="Replace all 6 theme variable lines">
+    Replace the entire block of six variables — `--ink`, `--ink-rgb`, `--paper`, `--paper-rgb`, `--paper-tint`, and `--ink-tint` — with the values for your chosen theme. All other CSS uses `var(--...)` references, so no other changes are needed.
+  </Step>
+</Steps>
+
+## The 5 themes
+
+<Tabs>
+  <Tab title="Ink Classic">
+
+### 墨水经典 (Ink Classic)
+
+**Best for:** general presentations, commercial launches, tech products — the safe default for any subject matter.
+
+**Aesthetic:** pure ink black paired with warm off-white. The strongest magazine feel of all five themes. Evokes Monocle, Apricot, and A Book Apart.
+
+```css
+--ink:#0a0a0b;
+--ink-rgb:10,10,11;
+--paper:#f1efea;
+--paper-rgb:241,239,234;
+--paper-tint:#e8e5de;
+--ink-tint:#18181a;
+```
+
+  </Tab>
+  <Tab title="Indigo Porcelain">
+
+### 靛蓝瓷 (Indigo Porcelain)
+
+**Best for:** tech, research, AI and data topics, engineering culture, deep content, technical conference decks.
+
+**Aesthetic:** deep indigo paired with porcelain white. Cool, rational, and precise — like an academic journal or blue-and-white ceramic.
+
+```css
+--ink:#0a1f3d;
+--ink-rgb:10,31,61;
+--paper:#f1f3f5;
+--paper-rgb:241,243,245;
+--paper-tint:#e4e8ec;
+--ink-tint:#152a4a;
+```
+
+  </Tab>
+  <Tab title="Forest Ink">
+
+### 森林墨 (Forest Ink)
+
+**Best for:** nature, sustainability, culture, nonfiction, outdoor brands, environmental themes.
+
+**Aesthetic:** deep forest green paired with ivory. Calm and breathable — like a vintage National Geographic issue.
+
+```css
+--ink:#1a2e1f;
+--ink-rgb:26,46,31;
+--paper:#f5f1e8;
+--paper-rgb:245,241,232;
+--paper-tint:#ece7da;
+--ink-tint:#253d2c;
+```
+
+  </Tab>
+  <Tab title="Kraft Paper">
+
+### 牛皮纸 (Kraft Paper)
+
+**Best for:** nostalgia, humanities, literature, history, book reviews, indie magazines, handcraft brands.
+
+**Aesthetic:** deep brown paired with warm beige. Warm and vintage — like a kraft envelope or an old notebook.
+
+```css
+--ink:#2a1e13;
+--ink-rgb:42,30,19;
+--paper:#eedfc7;
+--paper-rgb:238,223,199;
+--paper-tint:#e0d0b6;
+--ink-tint:#3a2a1d;
+```
+
+  </Tab>
+  <Tab title="Dune">
+
+### 沙丘 (Dune)
+
+**Best for:** art, design, fashion, gallery handbooks, aesthetic-first private presentations.
+
+**Aesthetic:** charcoal paired with sand. Restrained and high-end — like a desert at dusk or an architecture design catalog.
+
+```css
+--ink:#1f1a14;
+--ink-rgb:31,26,20;
+--paper:#f0e6d2;
+--paper-rgb:240,230,210;
+--paper-tint:#e3d7bf;
+--ink-tint:#2d2620;
+```
+
+  </Tab>
+</Tabs>
+
+## Choosing a theme
+
+| If your content is... | Recommended theme |
+|---|---|
+| Anything / first time / unsure | Ink Classic |
+| AI / tech / product launch | Indigo Porcelain |
+| Content analysis / industry observation / culture | Forest Ink |
+| Book review / lifestyle / humanities | Kraft Paper |
+| Design / art / brand / gallery | Dune |
+
+## Hard rules
+
+<Warning>
+Do not mix variables from different themes. Even taking `--ink` from Ink Classic and `--paper` from Dune will look wrong — the contrast ratios and warmth levels are tuned as a complete system.
+</Warning>
+
+- **One theme per deck.** Do not change themes mid-deck. The theme sets the mood for the entire presentation.
+- **No mixing variables across themes.** Every variable in a theme is calibrated against all the others. Taking one variable from a different theme breaks the balance.
+- **Reject user-supplied hex values.** If a user asks for a custom color, decline politely and present the five presets for them to choose from.
+- **Do not modify other color values in `template.html`.** All scattered `rgba()` values already use `var(--...)` references. Changing `:root` is the only edit needed.
+- **WebGL shaders are tested against all 5 themes.** Both the titanium-dispersion (dark hero) and silver-flow (light hero) shaders produce acceptable results with every preset. No shader adjustments are needed when switching themes.
+- **`currentColor`-driven borders and icons follow the section's text color automatically.** No extra adjustments needed after a theme switch.
+

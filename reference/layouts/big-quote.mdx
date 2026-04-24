@@ -1,0 +1,63 @@
+---
+title: "Layout 8: Big quote (key takeaway)"
+description: "Large blockquote slide for memorable key phrases — serif type at 5–6vw, optional lower-opacity English translation, meta row for attribution and date."
+---
+
+The big quote layout is for delivering a memorable phrase or attributed insight that the audience should carry with them after the presentation. It is the most ceremonial layout in the system — a single quote, set large in serif type, surrounded by whitespace, with a lower-opacity English translation and a meta row for attribution. Use it for your single strongest sentence in each act.
+
+**Default theme:** `dark` preferred; `light` occasionally for variety
+
+## HTML skeleton
+
+```html
+<section class="slide light">
+  <div class="chrome">
+    <div>The Takeaway · 核心金句</div>
+    <div>18 / 25</div>
+  </div>
+  <div class="frame" style="display:grid; gap:5vh; align-content:center; min-height:80vh">
+    <div class="kicker">Quote · 金句</div>
+    <blockquote style="font-family:var(--serif-zh); font-weight:700; font-size:5.8vw; line-height:1.2; letter-spacing:-.01em; max-width:72vw">
+      "没有交接,<br>所有人都在构建。"
+    </blockquote>
+    <p class="lead" style="max-width:55vw; opacity:.65">
+      Without the handoff, everyone builds.<br>
+      And that makes all the difference.
+    </p>
+    <div class="meta-row">
+      <span>— Luke Wroblewski</span><span>·</span><span>2026.04.16</span>
+    </div>
+  </div>
+  <div class="foot">
+    <div>Page 18 · 金句</div>
+    <div>— · —</div>
+  </div>
+</section>
+```
+
+## Blockquote sizing
+
+Set the `<blockquote>` font size via inline style in the range of **5vw to 6vw**. Do not use the `h-hero` class for the quote — `h-hero` is semantically reserved for the page's main heading (the deck title on the cover, the act name on a divider). Reusing it for a quote breaks the typographic hierarchy.
+
+The `font-family:var(--serif-zh)` inline style is required to ensure the quote renders in the serif family. The `<blockquote>` HTML element has no default class in `template.html`, so the serif override must be applied inline.
+
+## Component structure
+
+```
+.kicker          ← "Quote · 金句" or the quote category
+<blockquote>     ← the quote itself, 5–6vw serif, inline styled
+p.lead           ← English translation or elaboration, opacity:.65
+.meta-row        ← attribution · date
+```
+
+## Using the English translation
+
+The `p.lead` at `opacity:.65` is used for an English translation of a Chinese quote (or vice versa). The reduced opacity means it reads as a secondary layer — present for depth and internationalization, but not competing with the main quote for visual dominance.
+
+<Tip>
+The English translation in a lower-opacity lead adds depth without competing with the main quote. If the quote is already in English, you can use the lead for a brief framing sentence or omit it entirely.
+</Tip>
+
+## When to use
+
+Place a big quote slide at the end of an act as a takeaway, or as the penultimate slide of the entire deck. Avoid placing two big quote slides consecutively — the ceremonial weight of the layout loses its impact if repeated.

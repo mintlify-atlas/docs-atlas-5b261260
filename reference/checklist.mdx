@@ -1,0 +1,328 @@
+---
+title: "Quality checklist: P0 to P3 rules for every deck"
+description: "Tiered quality checklist for Magazine Web PPT — P0 non-negotiable rules through P3 operational details, plus the full pre-delivery self-review checklist."
+---
+
+Every generated deck must pass this checklist before delivery. The rules come from real iterations on real presentations — every item represents a failure mode that has been observed in the wild. Read the full list before generating a deck, then run through it again item by item after generation.
+
+<Note>
+P0 rules are non-negotiable. P1–P3 are strong recommendations. A deck with any P0 violation should not be delivered.
+</Note>
+
+## P0 — Must never fail
+
+<AccordionGroup>
+
+<Accordion title="0. Class pre-flight verification">
+
+**Symptom:** Pasting a layout skeleton into a new HTML file causes all styles to vanish — headings render in the wrong font family, large-number pages look like body text, pipeline steps collapse into a single line, and images stack at the bottom of the page.
+
+**Root cause:** If `template.html`'s `<style>` block does not define a class, the browser falls back to default styles.
+
+**Rule:** Before generating any slide HTML, read `assets/template.html` and confirm that every layout class you plan to use is already defined. The most commonly missing classes are:
+
+```
+h-hero / h-xl / h-sub / h-md / lead / meta-row / stat-card / stat-label /
+stat-nb / stat-unit / stat-note / pipeline-section / pipeline-label /
+pipeline / step / step-nb / step-title / step-desc / grid-2-7-5 /
+grid-2-6-6 / grid-2-8-4 / grid-3-3 / frame / img-cap / callout-src
+```
+
+If a class is missing, add it to `template.html`'s `<style>` block. Never write the definition inline in an individual slide. After generation, open the deck in a browser: if the main heading renders in a sans-serif font or pipeline steps are on one line, this is almost certainly the cause.
+
+</Accordion>
+
+<Accordion title="1. No emoji as icons">
+
+**Symptom:** Emoji icons (🎯 💡 ✅) immediately destroy the editorial aesthetic of a Chinese magazine-style deck.
+
+**Rule:** Use Lucide icons exclusively, loaded via CDN. The script tag is already in `template.html`:
+
+```html
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+```
+
+Use icons like this:
+
+```html
+<i data-lucide="target" class="ico-md"></i>
+```
+
+And initialize at the bottom of the body:
+
+```html
+<script>lucide.createIcons();</script>
+```
+
+Commonly used icon names: `target` / `palette` / `search-check` / `compass` / `share-2` / `crown` / `check-circle` / `x-circle` / `plus` / `arrow-right` / `grid-2x2` / `network`
+
+</Accordion>
+
+<Accordion title="2. Images crop bottom only — never top or sides">
+
+**Symptom:** Using `aspect-ratio` to size an image causes the grid to expand beyond its parent container, stacking images, or crops the top of screenshots where the title bar and key UI lives.
+
+**Rule:** Always use a fixed `height` with `overflow:hidden`. The CSS already sets `object-fit:cover` and `object-position:top` on `.frame-img img`, so only the bottom is cropped.
+
+```html
+<figure class="frame-img" style="height:26vh">
+  <img src="screenshot.png">
+</figure>
+```
+
+Never write this (it will break grid layouts):
+
+```html
+<!-- Bad — will expand and break the grid -->
+<figure class="frame-img" style="aspect-ratio: 16/9">...</figure>
+```
+
+**Exception:** A single main image that is not inside a grid may use `aspect-ratio` together with `max-height`, because the parent container provides the constraint.
+
+</Accordion>
+
+<Accordion title="3. Light/dark theme switching must work">
+
+**Symptom:** All light pages look grey and washed out, even hero light pages. The WebGL background is a dark canvas that never switches off.
+
+**Root cause:** The `go()` navigation function reads the slide's `classList` to determine whether to show the light or dark canvas. If no `light` or `dark` class is present on the slide, or if the deck opens on a dark slide and never transitions to a light one, the dark canvas stays on top permanently.
+
+**Rule:**
+- Every `<section>` must explicitly carry either `light` or `dark` as a class. Never omit it, never invent other theme names.
+- Hero pages use `hero light` or `hero dark`. Writing only `hero` without a theme class is invalid.
+- Every deck must contain at least one non-hero `light` page so the body can receive the `light-bg` class and the light canvas can surface.
+
+</Accordion>
+
+<Accordion title="4. Theme rhythm — no 3 consecutive same-theme pages">
+
+**Symptom:** The entire deck except the cover is `light`. The result is a flat, breathless white wall with no visual pacing.
+
+**Root cause:** Layout skeletons default to `light`. If you paste a skeleton without adjusting themes per page, every page will be light.
+
+**Rule — plan the rhythm table before writing code:**
+
+For each page, assign one of: `hero dark` / `hero light` / `light` / `dark`. The table must satisfy all of these hard constraints before a single line of HTML is written:
+
+- No 3 or more consecutive pages with the same theme
+- A deck of 8 or more pages must have at least 1 `hero dark` and at least 1 `hero light`
+- The deck cannot consist entirely of `light` body pages — there must be at least one `dark` body page
+
+**Layout guidance:**
+- Left-text-right-image, large pull quote, image-text mix → alternate `light` / `dark`
+- Large-number pages, image grids, pipeline pages, comparison pages → `light` (screenshots and numbers need a light background)
+- Cover, problem pages → `hero dark`
+- Act dividers → alternate `hero dark` and `hero light`
+
+</Accordion>
+
+<Accordion title="5. Chrome and kicker must not say the same thing">
+
+**Symptom:** The `.chrome` left text reads "Design First · 设计先行" and the `.kicker` on the same page reads "Phase 01 · 设计阶段". They say the same thing in different words — it reads as AI filler.
+
+**Rule:**
+- **Chrome = magazine running header / navigation label.** It can repeat across multiple pages (e.g., "Act II · Workflow" or "Data · Result"). It describes the section of the deck.
+- **Kicker = this page's unique hook.** It is short, has a specific angle, and leads directly into the main heading (e.g., "BUT" or "The Question"). It describes this specific page.
+
+One describes the chapter; the other describes the page. They must never be translations of each other.
+
+</Accordion>
+
+<Accordion title="6. Heading size and line breaks">
+
+**Symptom:** A Chinese heading at 13vw forces each character onto its own line. The result looks like a vertical list, not a heading.
+
+**Rule:**
+- `h-hero` (largest): 10vw — heading text must be 5 characters or fewer; add `white-space:nowrap`
+- `h-xl` (next): 6–7vw
+- For longer headings, use `<br>` to control line breaks manually. Do not rely on automatic wrapping.
+
+**Example:** `我不是程序员。` (6 characters) at `h-xl` 7.2vw with `white-space:nowrap` fits on one line cleanly.
+
+</Accordion>
+
+<Accordion title="7. Font family assignment">
+
+**Rule — three font roles, strictly separated:**
+
+- Large headings, pull quotes, large numbers → **serif** (Noto Serif SC + Playfair Display + Source Serif)
+- Body text, descriptions, pipeline step names → **sans-serif** (Noto Sans SC + Inter)
+- Metadata, code, labels → **monospace** (IBM Plex Mono + JetBrains Mono)
+
+All typefaces are loaded via Google Fonts CDN. They are already configured in `template.html` — do not add new `@import` statements.
+
+</Accordion>
+
+</AccordionGroup>
+
+## P1 — Rhythm and pacing
+
+<AccordionGroup>
+
+<Accordion title="6. Hero and non-hero pages must alternate">
+
+Consecutive hero pages create visual fatigue. Consecutive non-hero pages make the rhythm feel dead.
+
+**Recommended rhythm for a 25–30 page deck:**
+
+```
+Hero Cover → Act Divider (hero) → 3–4 non-hero pages → Act Divider (hero)
+→ 4–5 non-hero pages → Hero Question → ... → Hero Close
+```
+
+Running 2 or more consecutive hero pages is tiring. Running 4 or more consecutive non-hero pages stalls the pacing.
+
+</Accordion>
+
+<Accordion title="7. Alternate large-number pages with dense pages">
+
+Big-number pages (hero questions, stat grids) and dense pages (pipelines, image grids) should alternate. When both types appear back-to-back, the audience's eyes need relief. Alternating gives each type more impact.
+
+</Accordion>
+
+<Accordion title="8. Keep terminology consistent throughout the deck">
+
+**Symptom:** The deck alternates between "Skills", "技能", and "薄承载厚技能" for the same concept. The inconsistency reads as unpolished.
+
+**Rule:**
+- Prefer the English term when it is familiar to your audience (Skills / Harness / Pipeline / Workflow).
+- Do not force Chinese translations of established English industry terms.
+- One concept, one spelling, throughout the entire deck.
+
+</Accordion>
+
+<Accordion title="9. Chrome page number format">
+
+Use `XX / total` format in the chrome — for example `05 / 27`. Do not add a dynamic page number counter in the top-right corner of individual slides. That would duplicate what `.chrome` already shows.
+
+</Accordion>
+
+</AccordionGroup>
+
+## P2 — Visual polish
+
+<AccordionGroup>
+
+<Accordion title="10. WebGL mask opacity">
+
+The overlay mask between the slide content and the WebGL background must be tuned per page type:
+
+| Page type | Mask opacity |
+|---|---|
+| Dark hero | 12–15% (WebGL strongly visible) |
+| Light hero | 16–20% (WebGL subtly visible, does not compete with text) |
+| Regular light or dark | 92–95% (nearly opaque — background is barely present) |
+
+If a hero page has very little text, you can thin the mask further. If a regular page has dense body text, thicken the mask to ensure readability.
+
+</Accordion>
+
+<Accordion title="11. Light hero shaders — no strong center point">
+
+**Symptom:** A spiral vortex or radial ripple shader on a light hero page looks like a Windows 98 screensaver.
+
+**Rule:** Light hero pages must use FBM domain-warp flow — a moving, centerless pattern. Base color should stay close to silver or paper-white (`#F0F0F0` / `#FBF8F3`). Chromatic color shifts must be subtle (below 0.05).
+
+</Accordion>
+
+<Accordion title="12. Dark hero shaders allow more visual impact">
+
+Dark hero pages can use Holographic Dispersion (titanium color scatter) and other center-structured shaders. The dark background absorbs visual complexity that would feel overwhelming on a light page.
+
+</Accordion>
+
+<Accordion title="13. Left-text-right-image alignment">
+
+In a left-text-right-image two-column layout:
+
+- Left column (text): `justify-content:space-between` so the heading sits at the top and the callout or note sits at the bottom
+- Right column (image): `align-items:start` — the image aligns to the top of the column
+- Grid: `align-items:start` (not `center` or `end`)
+
+To make the left column's bottom element visually align with the bottom of the right image, control the left column's flex behavior — do not move the right column.
+
+</Accordion>
+
+<Accordion title="14. Image border radius">
+
+Apply `border-radius:4px` to all `.frame-img` containers and their `img` children. This softens edges without making the image look like a consumer app UI. Do not exceed `8px` — anything larger starts to feel like a mobile card component.
+
+</Accordion>
+
+</AccordionGroup>
+
+## P3 — Operational details
+
+<AccordionGroup>
+
+<Accordion title="15. Use relative image paths">
+
+Store all images in the `images/` directory and reference them with relative paths:
+
+```html
+<img src="images/screenshot.png" alt="…">
+```
+
+Never use absolute file system paths. Absolute paths break when the deck is moved or shared.
+
+</Accordion>
+
+<Accordion title="16. Chrome page numbers are hardcoded">
+
+The navigation JS dynamically counts slides and generates the correct number of bottom-navigation dots. However, the `XX / N` page number inside `.chrome` is written directly in the HTML and does not update automatically. When you add or remove slides, update every chrome page number by hand.
+
+</Accordion>
+
+<Accordion title="17. Keep the navigation JS intact">
+
+The template supports: left/right arrow keys, scroll wheel, touch swipe, bottom navigation dots, Home and End keys. Do not remove or modify the navigation logic. If a slide's JS behavior seems wrong, check `template.html` — do not rewrite the navigation.
+
+</Accordion>
+
+<Accordion title="18. Use min-height:80vh, not height:100vh">
+
+`height:100vh` sizes the slide to the full browser viewport, but browser toolbars, tab bars, and address bars consume part of that height on many devices. Content overflows or gets hidden behind navigation UI.
+
+Use `min-height:80vh` combined with `align-content:center` instead. This gives the slide enough room to breathe while remaining stable across different browsers and screen sizes.
+
+</Accordion>
+
+</AccordionGroup>
+
+## Final self-check
+
+Run through this checklist after generation, before delivery. Every box must be checked.
+
+```
+预检 (before generation)
+  □ 已读过 template.html 的 <style>，确认所需类都存在
+  □ 已决定每页用哪个 Layout (1-10)
+  □ 已画出"主题节奏表"：每页明确 hero dark / hero light / light / dark
+  □ 节奏表满足硬规则：无连续 3 页同主题 / 有 ≥1 hero dark + ≥1 hero light (8 页以上) / 至少有 1 个 dark 正文页
+  □ <title> 已改为实际 deck 标题 (grep "[必填]" 应无结果)
+
+内容
+  □ 每一幕的页数比例合理 (不会头重脚轻)
+  □ 没有使用 emoji 作图标
+  □ Skills / Harness 等术语用法统一
+  □ 每页的 kicker + 标题 + 正文 三级信息清晰
+
+排版
+  □ 所有大标题没有出现 1 字 1 行的换行
+  □ 图片网格用 height:Nvh 而非 aspect-ratio
+  □ 图片只裁底部，顶部和左右完整
+  □ 衬线/非衬线字体分工符合模板
+  □ Pipeline 多组之间有明显分隔
+
+视觉
+  □ hero 页和 non-hero 页交替
+  □ WebGL 背景在 hero 页可见
+  □ 图片有微弱圆角
+  □ 没有沉重的阴影和边框
+
+交互
+  □ ← → 翻页正常
+  □ 底部圆点数量与总页数匹配
+  □ chrome 里的页码和实际页号一致
+  □ ESC 键触发索引视图（如果保留）
+```

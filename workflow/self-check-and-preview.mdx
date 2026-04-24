@@ -1,0 +1,163 @@
+---
+title: "Self-check, preview, and iterating your deck"
+description: "Every generated deck must pass P0–P3 quality checks before delivery — open index.html directly in the browser, then adjust with inline style tweaks."
+---
+
+Every generated deck must pass the quality checklist before it is delivered. The checklist captures every mistake made across real iterative deck-building sessions, sorted by severity into four priority levels. P0 items are non-negotiable blockers. P1–P3 items are important but do not require halting delivery if time is tight. Work through them in order.
+
+## P0 — Critical: must pass before delivery
+
+### Class pre-flight verification
+
+If `assets/template.html` was not read before generating slides, CSS classes used in the layout skeletons may be absent from the `<style>` block. The symptom is visible immediately: large headings render in sans-serif, stat cards collapse into a single column, pipeline steps stack into one row, and images pile up at the bottom of the page. If you see any of these symptoms, the fix is to add the missing class definitions to the `<style>` block in `template.html` — not to add inline styles on individual slides.
+
+### No emoji as icons
+
+Emoji icons (`🎯`, `💡`, `✅`) immediately break the editorial magazine aesthetic. All icons must use the Lucide library, loaded from CDN:
+
+```html
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<!-- ... later in the body ... -->
+<i data-lucide="target" class="ico-md"></i>
+<!-- ... at the bottom of the body ... -->
+<script>lucide.createIcons();</script>
+```
+
+Commonly used Lucide icon names: `target`, `palette`, `search-check`, `compass`, `share-2`, `crown`, `check-circle`, `x-circle`, `plus`, `arrow-right`, `grid-2x2`, `network`.
+
+### Images only cropped at the bottom
+
+Images must never be cropped at the top or sides. The template's `.frame-img img` CSS already sets `object-fit:cover` and `object-position:top center`. The only valid image container pattern inside grids is:
+
+```html
+<figure class="frame-img" style="height:26vh">
+  <img src="images/screenshot.png" alt="Description">
+</figure>
+```
+
+Never use `aspect-ratio` on a grid image container:
+
+```html
+<!-- Bad — will overflow the grid and crop the top of the image -->
+<figure class="frame-img" style="aspect-ratio:16/9">...</figure>
+```
+
+The `aspect-ratio` + `max-height` pattern is only acceptable for single images that are not inside a grid (such as the main image in Layout 4).
+
+### Light/dark theme switching works
+
+Every `<section class="slide ...">` must include exactly one of `light`, `dark`, `hero light`, or `hero dark`. The navigation JavaScript reads these classes to decide which WebGL canvas layer to display and whether to apply `light-bg` to the body. Omitting the class, writing only `hero`, or using a custom name causes the wrong canvas to remain visible — most often experienced as a grey film over all light pages.
+
+### Theme rhythm is varied
+
+No 3 or more consecutive pages may share the same theme class. Any deck with 8 or more pages must include at least one `hero dark` and at least one `hero light`. The deck must contain at least one `dark` body page — an all-`light` deck looks flat and unbreathing.
+
+### chrome and kicker do not repeat the same text
+
+These two elements occupy different semantic roles and must never be synonymous translations of each other:
+
+| Element | Role | Example |
+|---------|------|---------|
+| `.chrome` left | Magazine header / navigation metadata — stable across multiple pages | `"Act II · Workflow"` |
+| `.chrome` right | Page number and act number | `"Act II · 15 / 25"` |
+| `.kicker` | This page's unique hook — the small prefix above the main heading | `"BUT"` or `"The Question"` |
+
+### Large headings ≤ 5 characters with nowrap
+
+`h-hero` is set at 10vw. A Chinese heading longer than 5 characters at that size will force single-character line breaks, which looks broken. Keep `h-hero` headlines to 5 characters or fewer and add `white-space:nowrap`. For longer titles, use `h-xl` at 6vw–7vw with manual `<br>` breaks at semantic points.
+
+### Typography: serif headings, sans-serif body, monospace metadata
+
+| Content type | Font family |
+|-------------|-------------|
+| Large headings, key quotes, stat numbers | Serif (Noto Serif SC, Playfair Display, Source Serif) |
+| Body text, descriptions, pipeline step names | Sans-serif (Noto Sans SC, Inter) |
+| Metadata, tags, code | Monospace (IBM Plex Mono, JetBrains Mono) |
+
+All fonts are loaded via Google Fonts CDN in the template — no additional setup required.
+
+## P1 — Rhythm and pacing
+
+**Hero / non-hero alternation:** The recommended pattern for a 25–30 page deck is `Hero Cover → Act Divider (hero) → 3–4 non-hero pages → Act Divider (hero) → 4–5 non-hero pages → Hero Question → ... → Hero Close`. More than 2 consecutive hero pages causes fatigue. More than 4 consecutive non-hero pages makes the pacing feel dead.
+
+**Big-number and dense-page alternation:** Big Numbers pages (Layout 3) and Hero Question pages (Layout 7) should be interleaved with dense content pages like Pipeline (Layout 6) and Image Grid (Layout 5). The contrast between sparse and dense pages is what keeps an audience engaged.
+
+**Consistent terminology:** Choose one spelling for each concept and use it throughout the entire deck. Do not alternate between "Skills" and "技能" or between "Workflow" and "工作流". Technical terms in English (Skills, Harness, Pipeline) are preferred — forced translation often sounds stiff.
+
+## P2 — Visual polish
+
+**WebGL mask opacity guidelines:**
+
+| Page type | Recommended mask opacity |
+|-----------|------------------------|
+| `dark` hero | 12–15% (WebGL clearly visible) |
+| `light` hero | 16–20% (WebGL subtly visible, does not compete with text) |
+| Regular `light` / `dark` body pages | 92–95% (nearly invisible) |
+
+**Light hero shader style:** Avoid shaders with a strong central focal point (spiral vortex, radial ripple) on light-themed hero pages — they are too prominent against a light background and resemble screensavers. Light hero pages should use FBM domain-warped flow with no center structure, keeping base colors near silver or paper-white (`#F0F0F0` / `#FBF8F3`) and chromatic aberration below 0.05.
+
+**Image border radius:** All `.frame-img` elements and their contained `<img>` tags should have `border-radius:4px`. Do not exceed `8px` — values above that begin to look like consumer app UI cards rather than editorial print photography.
+
+## P3 — Operational details
+
+**Relative image paths:** All image `src` attributes must use relative paths (`images/xxx.png`). Never use absolute paths. The deck is a single folder that can be moved or shared without path breakage.
+
+**Hardcoded page numbers in chrome:** The `.chrome` page number (`XX / N`) is written as static text, not generated dynamically. When pages are added or removed, update the total page count manually across all chrome elements.
+
+**Keep the navigation JavaScript:** The template includes keyboard arrow navigation, scroll wheel support, touch swipe, bottom dot indicators, and ESC-key index view. Do not remove or modify this script block.
+
+## Preview
+
+Open the deck directly in the browser — no local server is needed. Images load via relative paths from the `images/` subfolder.
+
+```bash
+open "项目/XXX/ppt/index.html"
+```
+
+## Iteration
+
+The template CSS is fully parameterized through CSS variables and inline styles. Ninety percent of visual adjustments after a first preview are small numeric changes:
+
+- **Font size:** `font-size:Xvw` (viewport-width units scale with screen size)
+- **Height:** `height:Yvh` (viewport-height units for images and containers)
+- **Gap:** `gap:Zvh` (spacing between grid cells and flex children)
+
+## Final self-check checklist
+
+Run through every item below before delivering the deck. All boxes must be checked.
+
+```
+Pre-generation
+  □ Read template.html <style> block — all required classes confirmed present
+  □ Layout selected for every page (Layouts 1–10)
+  □ Theme rhythm table drawn: each page has hero dark / hero light / light / dark assigned
+  □ Rhythm table satisfies hard rules: no 3 consecutive same theme / ≥1 hero dark + ≥1 hero light (8+ pages) / at least 1 dark body page
+  □ <title> updated to actual deck title (grep "[必填]" returns no output)
+
+Content
+  □ Page count per act is proportionally balanced (no front-heavy or back-heavy structure)
+  □ No emoji used as icons
+  □ Skills / Harness / Pipeline and other key terms are spelled consistently throughout
+  □ Every page has a clear three-level hierarchy: kicker → heading → body
+
+Typography
+  □ No large heading breaks into single characters per line
+  □ Image grids use height:Nvh — not aspect-ratio
+  □ Images cropped only at the bottom — top and sides fully visible
+  □ Serif / sans-serif / monospace font roles match the template specification
+  □ Pipeline groups have clear visual separation between sections
+
+Visual
+  □ Hero pages and non-hero pages alternate throughout the deck
+  □ WebGL background is visible on hero pages
+  □ Images have a subtle border-radius (4px)
+  □ No heavy shadows or thick borders anywhere
+
+Interaction
+  □ ← → keyboard navigation works correctly
+  □ Bottom dot count matches total page count
+  □ chrome page numbers match actual page positions
+  □ ESC key triggers the index view (if the feature is retained)
+```
+
+For the full P0–P3 rule breakdown with detailed explanations of each item, see the [Quality Checklist reference](/reference/checklist).

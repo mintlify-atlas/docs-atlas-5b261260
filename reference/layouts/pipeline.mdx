@@ -1,0 +1,105 @@
+---
+title: "Layout 6: Two-column pipeline (workflow steps)"
+description: "Sequential workflow layout with numbered steps and group labels. Use pipeline-section to separate phases; keep each row to five steps or fewer."
+---
+
+The pipeline layout is for presenting sequential workflows, processes, or phased plans. Steps are numbered and arranged horizontally within a `.pipeline` row, with a `.pipeline-label` naming each group. Multiple groups stack vertically, each separated by a top divider line that is applied automatically by CSS. Use this layout whenever the narrative is about how something is done, not just what was done.
+
+**Default theme:** `light` (workflow diagrams need a clean background for readability)
+
+## HTML skeleton
+
+```html
+<section class="slide light">
+  <div class="chrome">
+    <div>我的工作流 · Workflow</div>
+    <div>Act II · 15 / 27</div>
+  </div>
+  <div class="frame">
+    <div class="kicker">Pipeline · 流水线</div>
+    <h2 class="h-xl">两条流水线</h2>
+
+    <!-- 第一组：文本侧 -->
+    <div class="pipeline-section">
+      <div class="pipeline-label">文本侧 · Text Pipeline</div>
+      <div class="pipeline">
+        <div class="step">
+          <div class="step-nb">01</div>
+          <div class="step-title">Draft</div>
+          <div class="step-desc">AI 帮我起草初稿</div>
+        </div>
+        <div class="step">
+          <div class="step-nb">02</div>
+          <div class="step-title">Polish</div>
+          <div class="step-desc">AI 润色去 AI 味</div>
+        </div>
+        <div class="step">
+          <div class="step-nb">03</div>
+          <div class="step-title">Morph</div>
+          <div class="step-desc">AI 变形成推特 / 小红书</div>
+        </div>
+        <div class="step">
+          <div class="step-nb">04</div>
+          <div class="step-title">Illustrate</div>
+          <div class="step-desc">AI 生成信息图</div>
+        </div>
+        <div class="step">
+          <div class="step-nb">05</div>
+          <div class="step-title">Distribute</div>
+          <div class="step-desc">一键分发 9 平台</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 第二组：视频侧 -->
+    <div class="pipeline-section">
+      <div class="pipeline-label">视觉 · 视频侧 · Video Pipeline</div>
+      <div class="pipeline">
+        <div class="step">
+          <div class="step-nb">06</div>
+          <div class="step-title">Cut</div>
+          <div class="step-desc">AI 帮我剪辑</div>
+        </div>
+        <div class="step">
+          <div class="step-nb">07</div>
+          <div class="step-title">Wrap</div>
+          <div class="step-desc">AI 帮我包装</div>
+        </div>
+        <div class="step">
+          <div class="step-nb">08</div>
+          <div class="step-title">Cover</div>
+          <div class="step-desc">AI 生成封面</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="foot">
+    <div>Page 15 · 我的内容工厂</div>
+    <div>Workflow</div>
+  </div>
+</section>
+```
+
+## Component structure
+
+```
+.pipeline-section            ← one group of steps (adds top divider line via CSS)
+  .pipeline-label            ← group name / phase label
+  .pipeline                  ← horizontal row of steps
+    .step                    ← individual step card
+      .step-nb               ← step number (e.g. "01")
+      .step-title            ← short step name (one or two words)
+      .step-desc             ← one-line description of what happens
+```
+
+## Using multiple pipeline groups
+
+Add as many `.pipeline-section` blocks as needed — each one gets a top divider line automatically through CSS, creating clear visual separation between groups. You do not need to add any separator markup between groups.
+
+## Step count per row
+
+Keep each `.pipeline` row to a maximum of 5 steps. Beyond 5, the `.step` cards become too narrow to read the `.step-title` and `.step-desc` comfortably. If a workflow has more than 5 steps, split it into a second `.pipeline-section` with its own `.pipeline-label`.
+
+<Tip>
+The `.pipeline-section` class automatically adds a top divider line via CSS — this is built into `template.html`. You do not need to add `<hr>` or `border-top` manually between groups.
+</Tip>

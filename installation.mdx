@@ -1,0 +1,72 @@
+---
+title: "Install Magazine Web PPT Skill in Claude Code"
+description: "Install Magazine Web PPT Skill into Claude Code: paste one paragraph to any AI agent with shell access, or run a single git clone yourself."
+---
+
+Magazine Web PPT Skill lives in `~/.claude/skills/magazine-web-ppt/` — the standard skills directory that Claude Code scans automatically at startup. Once the folder is present and contains `SKILL.md`, Claude Code discovers the skill without any configuration change. The next time you type one of the trigger keywords in a session, Claude reads the skill file and starts the six-step workflow.
+
+## Installation
+
+<Tabs>
+  <Tab title="Via AI agent (recommended)">
+    Copy the paragraph below and paste it into any Claude Code session that has shell access. Claude will create the directory, clone the repository, and confirm the installation:
+
+    > Help me install the `guizang-ppt-skill` Claude Code skill. Please follow these steps:
+    >
+    > 1. Make sure `~/.claude/skills/` exists (create it if it doesn't).
+    > 2. Run `git clone https://github.com/op7418/guizang-ppt-skill.git ~/.claude/skills/magazine-web-ppt`
+    > 3. Verify: `ls ~/.claude/skills/magazine-web-ppt/` should show `SKILL.md`, `assets/`, and `references/`.
+    > 4. Tell me when it's done — after that, phrases like "make a magazine-style PPT" will trigger the skill.
+
+    **After Claude confirms, check these three things:**
+
+    1. `~/.claude/skills/magazine-web-ppt/` exists
+    2. `SKILL.md`, `assets/`, and `references/` are all present inside it
+    3. Start a new session and type one of the trigger keywords (see below)
+  </Tab>
+  <Tab title="Manual (git clone)">
+    Run this command directly in your terminal:
+
+    ```bash
+    git clone https://github.com/op7418/guizang-ppt-skill.git ~/.claude/skills/magazine-web-ppt
+    ```
+
+    No additional steps are required. Claude Code will discover the skill automatically the next time it starts.
+  </Tab>
+</Tabs>
+
+## Verify the installation
+
+<Steps>
+  <Step title="Check the directory exists">
+    ```bash
+    ls ~/.claude/skills/magazine-web-ppt/
+    ```
+
+    You should see `SKILL.md`, `assets/`, and `references/` listed.
+  </Step>
+  <Step title="Confirm required files are present">
+    ```bash
+    ls ~/.claude/skills/magazine-web-ppt/assets/
+    ls ~/.claude/skills/magazine-web-ppt/references/
+    ```
+
+    `assets/` should contain `template.html`. `references/` should contain `components.md`, `layouts.md`, `themes.md`, and `checklist.md`.
+  </Step>
+  <Step title="Test with a trigger keyword">
+    Open a new Claude Code session and type one of the phrases from the list below. Claude should respond by starting the requirements clarification workflow rather than treating it as a generic request.
+  </Step>
+</Steps>
+
+## Trigger keywords
+
+Once installed, Claude Code invokes the skill automatically when it sees any of these phrases in your message:
+
+- "帮我做一份杂志风 PPT"
+- "生成一个 horizontal swipe deck"
+- "editorial magazine style presentation"
+- "electronic ink 风格演讲 slides"
+
+<Tip>
+Claude Code automatically discovers the skill in `~/.claude/skills/` and invokes it when it sees the trigger keywords. You do not need to reference the skill by name or load it manually.
+</Tip>

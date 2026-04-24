@@ -1,0 +1,96 @@
+---
+title: "Clarifying requirements before building your deck"
+description: "Ask 6 targeted questions to lock in audience, duration, theme, and images before writing a single slide — wrong structure means expensive rework."
+---
+
+Getting the structure right before writing any slide code is the single highest-leverage thing you can do. Once a deck's narrative arc and page count are set incorrectly, every subsequent fix multiplies in cost — layouts need replacing, theme rhythm breaks, and image crops need redoing. If the user has already supplied a complete outline plus all images, you can skip this step and go straight to [copying the template](/workflow/template-setup). Otherwise, work through the six questions below before touching any code.
+
+## The 6 clarification questions
+
+<AccordionGroup>
+  <Accordion title="1. Who is the audience and what is the sharing context?">
+    **Question:** Who is the audience? Is this an internal industry talk, a commercial launch, a demo day, or a private salon?
+
+    **Why it matters:** The answer determines language register, information density, and how much background context needs to be established. A technical audience at a demo day needs no hand-holding on terminology; a general private salon needs more scene-setting.
+  </Accordion>
+
+  <Accordion title="2. How long is the presentation?">
+    **Question:** What is the planned speaking duration?
+
+    **Why it matters:** Duration directly controls page count. Building 30 pages for a 15-minute slot will result in a rushed delivery or content that never gets shown. Agree on duration first, then derive the page budget.
+  </Accordion>
+
+  <Accordion title="3. Is there existing source material?">
+    **Question:** Do you have any raw material — documents, data, old slide decks, article links?
+
+    **Why it matters:** If source material exists, the deck should be built from it. Without material, you are constructing content from scratch and need more time for the outline phase.
+  </Accordion>
+
+  <Accordion title="4. Are there images, and where are they?">
+    **Question:** Do you have images ready? Where are they stored?
+
+    **Why it matters:** Layouts 4, 5, and 10 (Quote + Image, Image Grid, Lead Image) cannot be visually validated without real images. Knowing the image situation early prevents placeholder debt. See the image naming conventions section below for the full handoff spec.
+  </Accordion>
+
+  <Accordion title="5. Which color theme do you want?">
+    **Question:** Which of the 5 preset themes fits your content?
+
+    **Why it matters:** Theme selection affects every page. It must be decided before Step 2 so the correct CSS variables are written into `:root{}` once, not patched across multiple files. See [Choosing a color theme](/workflow/themes) for the full comparison table.
+  </Accordion>
+
+  <Accordion title="6. Are there hard constraints?">
+    **Question:** Is there anything that must be included, or anything that must not appear?
+
+    **Why it matters:** Discovering a mandatory data point or a forbidden competitor name after the deck is built means a structural rewrite. Surface constraints now.
+  </Accordion>
+</AccordionGroup>
+
+## Narrative arc template
+
+If the user does not have an outline, use this five-part arc to build the skeleton before filling in content. Align the arc, the page count, and the theme rhythm table together — all three at once — before moving to Step 2.
+
+```
+Hook (钩子)       → 1 page    : Open with a contrast, a question, or a hard number that makes the audience stop
+Context (定调)    → 1-2 pages : Establish background, who you are, and why this talk matters
+Core (主体)       → 3-5 pages : Main content — use Layouts 4, 5, 6, 9, and 10 interleaved
+Shift (转折)      → 1 page    : Break an expectation or introduce a new perspective
+Takeaway (收束)   → 1-2 pages : A key quote, an open question, or a concrete action
+```
+
+## Duration guide
+
+| Speaking time | Recommended page count |
+|---------------|----------------------|
+| 15 minutes    | ~10 pages            |
+| 30 minutes    | ~20 pages            |
+| 45 minutes    | ~25–30 pages         |
+
+## Image naming conventions
+
+Tell the user the following conventions before any images are prepared, so that HTML paths never need to be updated after the fact.
+
+**Folder location:** Place all images at `项目/XXX/ppt/images/` — the same directory level as `index.html`.
+
+**Naming format:** `{page}-{semantic}.{ext}`, for example:
+- `01-cover.jpg` — cover page hero image
+- `03-figma.jpg` — Figma design system screenshot on page 3
+- `05-dashboard.png` — product dashboard on page 5
+
+Use zero-padded page numbers so files sort correctly in any file manager. Keep semantic labels in English, short, and specific.
+
+**Size recommendations:**
+
+| Consideration | Guidance |
+|---------------|----------|
+| Minimum width | ≥ 1600 px (prevents blurriness on large displays) |
+| Photo / screenshot format | JPG |
+| Transparent UI / chart format | PNG |
+| Total image folder size | ≤ 10 MB (keeps page transitions smooth) |
+
+**Replacing images:** The safest method is same-name overwrite — the HTML path does not need to change. If the filename must change, do a global search for `images/old-name` in `index.html` and replace every occurrence.
+
+**No images yet:** Agree with the user on placeholder color blocks for image slots. Note that Layouts 4, 5, and 10 cannot be visually verified without real images — flag this gap before delivery.
+
+<Tip>
+  Save your outline as `项目记录.md` or `大纲-v1.md` alongside the deck for easy iteration. When you return to the deck later, you will know exactly which decisions were made and why.
+</Tip>

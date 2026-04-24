@@ -1,0 +1,57 @@
+---
+title: "Layout 1: Hero cover slide"
+description: "The opening cover slide uses a WebGL background, a 10vw serif heading, and a meta row to set the deck's aesthetic tone from the very first frame."
+---
+
+The hero cover is the first slide of every deck. It sets the entire aesthetic tone — full WebGL background, the largest possible serif heading (`h-hero` at 10vw), a subtitle, a lead sentence, and a meta row for the speaker's name and title. Everything is vertically centered with `min-height:80vh + align-content:center`. Use it once, always as slide 1.
+
+**Default theme:** `hero dark`
+
+## HTML skeleton
+
+```html
+<section class="slide hero dark">
+  <div class="chrome">
+    <div>A Talk · 2026.04.22</div>
+    <div>Vol.01</div>
+  </div>
+  <div class="frame" style="display:grid; gap:4vh; align-content:center; min-height:80vh">
+    <div class="kicker">私享会 · 李继刚</div>
+    <h1 class="h-hero">一人公司</h1>
+    <h2 class="h-sub">被 AI 折叠的组织</h2>
+    <p class="lead" style="max-width:60vw">
+      一个 AI 创作者 —— 在 64 天里做了 11 万行代码、在 9 个平台上持续输出，生活节奏几乎没有被改变。
+    </p>
+    <div class="meta-row">
+      <span>歸藏 Guizang</span><span>·</span><span>独立创作者 / CodePilot 作者</span>
+    </div>
+  </div>
+  <div class="foot">
+    <div>一场关于 AI · 组织 · 个体的分享</div>
+    <div>— 2026 —</div>
+  </div>
+</section>
+```
+
+## Key points
+
+- **`hero dark`** lets the WebGL background show through across most of the slide surface — this is the primary visual effect on the cover.
+- **`h-hero`** is the maximum font size in the system (10vw) and acts as the primary visual anchor of the slide.
+- **`min-height:80vh + align-content:center`** vertically centers the entire content block without flexbox tricks.
+- The `.chrome` page number is optional on the cover — the cover is self-contained and does not need navigation context.
+
+## Component structure
+
+```
+.chrome          ← top-left context label + top-right vol/date
+  .kicker        ← small hook line above the main heading
+  h1.h-hero      ← primary visual: largest serif, 10vw
+  h2.h-sub       ← subtitle, smaller serif
+  p.lead         ← one-sentence framing, max-width:60vw
+  .meta-row      ← speaker name · role · affiliation
+.foot            ← bottom-left tagline + bottom-right year
+```
+
+## When to use
+
+Always use the hero cover as the first slide of a deck. Do not use it mid-deck or as an act divider — for section transitions, use [Layout 2: Act Divider](/reference/layouts/act-divider).

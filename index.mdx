@@ -1,97 +1,64 @@
 ---
-title: "Introduction"
-description: "Welcome to the new home for your documentation"
+title: "Magazine Web PPT Skill: AI-powered editorial presentations"
+description: "Generate single-file HTML swipe decks in a magazine × e-ink aesthetic — WebGL backgrounds, three-tier typography, 10 layout skeletons, 5 color themes."
 ---
 
-## Setting up
+Magazine Web PPT Skill is an AI agent skill for Claude Code that generates polished, single-file HTML presentations. The output aesthetic is a cross between *Monocle* magazine and e-ink displays — serif headings, WebGL fluid backgrounds on hero slides, and a strict typography hierarchy that makes slides feel editorial rather than corporate. Every deck is a self-contained HTML file: no build tools, no server, just open in a browser.
 
-Get your documentation site up and running in minutes.
-
-<Card
-  title="Start here"
-  icon="rocket"
-  href="/quickstart"
-  horizontal
->
-  Follow our three step quickstart guide.
-</Card>
-
-## Make it yours
-
-Design a docs site that looks great and empowers your users.
-
-<Columns cols={2}>
-  <Card
-    title="Edit locally"
-    icon="pen-to-square"
-    href="/development"
-  >
-    Edit your docs locally and preview them in real time.
+<CardGroup cols={2}>
+  <Card title="Introduction" icon="book-open" href="/introduction">
+    Understand what this skill produces and when to use it
   </Card>
-  <Card
-    title="Customize your site"
-    icon="palette"
-    href="/essentials/settings"
-  >
-    Customize the design and colors of your site to match your brand.
+  <Card title="Installation" icon="download" href="/installation">
+    Install the skill into Claude Code in one command
   </Card>
-    <Card
-    title="Set up navigation"
-    icon="map"
-    href="/essentials/navigation"
-  >
-    Organize your docs to help users find what they need and succeed with your product.
+  <Card title="Quickstart" icon="rocket" href="/quickstart">
+    Go from a topic to a finished deck in six steps
   </Card>
-  <Card
-    title="API documentation"
-    icon="terminal"
-    href="/api-reference/introduction"
-  >
-    Auto-generate API documentation from OpenAPI specifications.
+  <Card title="Layout Reference" icon="table-columns" href="/reference/layouts/overview">
+    Browse all 10 paste-ready slide layout skeletons
   </Card>
-</Columns>
+</CardGroup>
 
-## Create beautiful pages
+## What you get
 
-Everything you need to create world-class documentation.
+Each generated deck includes everything pre-wired in a single HTML file:
 
-<Columns cols={2}>
-  <Card
-    title="Write with MDX"
-    icon="pen-fancy"
-    href="/essentials/markdown"
-  >
-    Use MDX to style your docs pages.
-  </Card>
-  <Card
-    title="Code samples"
-    icon="code"
-    href="/essentials/code"
-  >
-    Add sample code to demonstrate how to use your product.
-  </Card>
-  <Card
-    title="Images"
-    icon="image"
-    href="/essentials/images"
-  >
-    Display images and other media.
-  </Card>
-  <Card
-    title="Reusable snippets"
-    icon="recycle"
-    href="/essentials/reusable-snippets"
-  >
-    Write once and reuse across your docs.
-  </Card>
-</Columns>
+- **WebGL fluid backgrounds** — animate on hero slides, near-invisible on content slides
+- **Three-tier typography** — Noto Serif SC + Playfair Display for headings, Noto Sans SC + Inter for body, IBM Plex Mono for metadata
+- **Horizontal swipe navigation** — keyboard `←` `→`, scroll wheel, touch swipe, dot indicators, `ESC` index view
+- **5 curated color themes** — Ink Classic, Indigo Porcelain, Forest Ink, Kraft Paper, Dune. No custom hex values; the presets protect the aesthetic
+- **10 slide layout skeletons** — paste-ready HTML for every common slide type
 
-## Need inspiration?
+<CardGroup cols={3}>
+  <Card title="Workflow" icon="list-check" href="/workflow/requirements">
+    6-step structured workflow with AI requirement clarification
+  </Card>
+  <Card title="Themes" icon="palette" href="/workflow/themes">
+    5 preset color themes with usage guidance
+  </Card>
+  <Card title="Checklist" icon="circle-check" href="/reference/checklist">
+    P0–P3 quality checklist to self-review every deck
+  </Card>
+</CardGroup>
 
-<Card
-  title="See complete examples"
-  icon="stars"
-  href="https://mintlify.com/customers"
->
-  Browse our showcase of exceptional documentation sites.
-</Card>
+## When to use this skill
+
+<Steps>
+  <Step title="Tell Claude Code what you want to present">
+    Trigger the skill with phrases like "make a magazine-style PPT" or "generate a horizontal swipe deck". Claude will clarify audience, duration, content, and theme.
+  </Step>
+  <Step title="Claude copies and configures the template">
+    The skill copies `assets/template.html` to your project directory, sets the `<title>`, and applies your chosen color theme.
+  </Step>
+  <Step title="Slides are filled using layout skeletons">
+    Claude picks from 10 layout types — cover, act dividers, data stats, pipelines, image grids, quotes, and more — and adapts them to your content.
+  </Step>
+  <Step title="Open in any browser">
+    No build step. No server. Open `index.html` directly and present.
+  </Step>
+</Steps>
+
+<Note>
+This skill is designed for editorial-style presentations: conference talks, product launches, internal shares, and demo days. It is not suited for dense data tables, training materials, or collaborative editing workflows.
+</Note>

@@ -1,0 +1,57 @@
+---
+title: "What is Magazine Web PPT Skill?"
+description: "An AI agent skill for Claude Code that generates editorial single-file HTML decks in a magazine × e-ink aesthetic — for speakers, not slide tools."
+---
+
+Magazine Web PPT Skill is a structured AI agent skill for Claude Code that generates a complete, self-contained HTML presentation from a single prompt conversation. The output is a single `.html` file — no build tools, no server, no export step — styled in a "electronic magazine × e-ink" aesthetic: think *Monocle* magazine rendered in code. Claude reads `SKILL.md`, runs a six-step workflow on your behalf, and hands you a ready-to-present deck with WebGL fluid backgrounds, a strict three-tier typography system (Noto Serif SC + Playfair Display for headings, Noto Sans SC + Inter for body, IBM Plex Mono for metadata), and horizontal swipe navigation.
+
+## When to use
+
+<AccordionGroup>
+  <Accordion title="Good scenarios">
+    - Conference talks, industry keynotes, and private meetups
+    - AI product launches and demo days
+    - Presentations with strong personal voice and editorial style
+    - Any deck you want to deliver as a shareable URL — no PPT viewer required
+  </Accordion>
+  <Accordion title="Not a good fit">
+    - Large tables of data or heavily annotated charts (use a conventional PPT tool)
+    - Training materials where information density must be high
+    - Decks that multiple people need to co-edit (the output is static HTML)
+  </Accordion>
+</AccordionGroup>
+
+## What's included
+
+<CardGroup cols={2}>
+  <Card title="template.html" icon="file-code">
+    The seed HTML file — CSS, WebGL shader, flip navigation, and font/icon CDN links are all pre-wired. Only the slide content inside `<main id="deck">` needs to be filled.
+  </Card>
+  <Card title="10 layout skeletons" icon="table-columns">
+    Paste-ready `<section>` blocks for every common slide type: cover, act divider, data stat, left-text/right-image, image grid, pipeline, suspense question, big quote, before/after, and lead image.
+  </Card>
+  <Card title="5 color themes" icon="palette">
+    Ink Classic, Indigo Porcelain, Forest Ink, Kraft Paper, and Dune. Custom hex values are not accepted — the presets exist to protect the aesthetic.
+  </Card>
+  <Card title="Quality checklist" icon="circle-check">
+    A P0–P3 graded checklist (`references/checklist.md`) that captures every issue uncovered across real iterative deck builds. P0 rules must all pass before delivery.
+  </Card>
+</CardGroup>
+
+## Aesthetic philosophy
+
+The visual language was distilled from five rounds of real conference deck iteration. Violating any of these principles causes the visual quality to collapse:
+
+1. **Restraint over showmanship** — The WebGL background is visible only on hero slides; content slides are nearly invisible to the shader. Animation serves emphasis, not entertainment.
+
+2. **Structure over decoration** — No drop shadows, no floating cards, no padding boxes. All information hierarchy is communicated through large type, font contrast, and grid whitespace.
+
+3. **Typography defines content hierarchy** — Largest serif = primary heading. Medium serif = subhead. Large sans-serif = lead copy. Small sans-serif = body. Monospace = metadata. Font choice is not decorative — it is structural.
+
+4. **Image as first citizen** — Images are never cropped at the top or sides, only at the bottom if necessary. In grid layouts, height is fixed with `height:Nvh`; `aspect-ratio` is never used because it breaks the grid.
+
+5. **Rhythm via hero pages** — Hero slides and content slides must alternate. Three or more consecutive slides of the same type cause visual fatigue. The hero/non-hero cadence is what gives a deck its pace.
+
+<Note>
+This is not a commercial PPT tool. It's an AI agent skill — Claude Code reads `SKILL.md` and runs the workflow on your behalf.
+</Note>

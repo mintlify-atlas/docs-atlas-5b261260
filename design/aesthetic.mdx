@@ -1,0 +1,79 @@
+---
+title: "The magazine × e-ink aesthetic explained"
+description: "Magazine Web PPT draws from Monocle layouts and e-ink minimalism — not business slides or consumer UI — with six enforced design principles."
+---
+
+Magazine Web PPT is not a business presentation tool, and it is not a consumer internet UI kit. Its visual identity sits at a specific intersection: *Monocle* magazine's editorial restraint, layered with the monochrome clarity of e-ink displays, running as a single HTML file. Every decision in the template — the serif/sans hierarchy, the WebGL visibility rules, the image cropping behavior — is a consequence of this aesthetic stance rather than a technical default.
+
+## Visual references
+
+The aesthetic was built with three concrete reference points:
+
+- **Monocle magazine layouts** — grid-driven pages, generous whitespace, serif display type used for emphasis rather than decoration, mono metadata in headers and footers, no drop shadows.
+- **Garry Tan's "Thin Harness, Fat Skills" blog (YC)** — the concept of a lightweight structural container that lets capability show through, rather than burying it in chrome.
+- **歸藏 "一人公司：被 AI 折叠的组织" (2026-04-22, 27 slides)** — the author's own talk, which went through five real iterations before the aesthetic principles were extracted and codified in this skill.
+
+These are the style anchors. When a design decision feels uncertain, check it against these references first.
+
+## The six core design principles
+
+<AccordionGroup>
+  <Accordion title="1. Restraint over showmanship">
+    WebGL fluid backgrounds are visible only on hero slides — covers, section dividers, big-quote pages, and closing screens. On regular content slides, the overlay opacity rises to 92–95%, making the shader nearly invisible.
+
+    This is intentional. The WebGL effect exists to punctuate the deck's rhythm, not to fill every slide. If every slide shows the background, none of them do.
+  </Accordion>
+
+  <Accordion title="2. Structure over decoration">
+    No box shadows. No floating card effects. No padding boxes used as visual containers. No thick borders.
+
+    Information hierarchy is established entirely through font size, font family contrast, and grid whitespace. If a layout requires a drop shadow to communicate structure, the layout is wrong — not the shadow budget.
+  </Accordion>
+
+  <Accordion title="3. Content hierarchy defined by font size AND font family">
+    The typographic system has five tiers, and each tier uses a different font family:
+
+    | Tier | Font | Role |
+    |---|---|---|
+    | Largest serif | Noto Serif SC 700 / Playfair Display 700 | Main title |
+    | Medium serif | Noto Serif SC 400–600 | Subtitle / lead |
+    | Large sans | Noto Sans SC 400 | Body text |
+    | Small sans | Noto Sans SC 400 (smaller) | Descriptions |
+    | Monospace | IBM Plex Mono | Metadata, kickers |
+
+    Mixing these assignments — for example, using a sans-serif class for a main heading — breaks the entire hierarchy at a glance.
+  </Accordion>
+
+  <Accordion title="4. Image as first citizen">
+    Images are cropped only at the bottom. The CSS preset `object-fit:cover` with `object-position:top center` guarantees the top and sides of every image are always preserved — the part of a screenshot or photo that carries identity information.
+
+    In image grids, height is always fixed with `height:Nvh`. Using `aspect-ratio` instead causes the grid to overflow its container. This is not a style preference; it is a layout constraint.
+  </Accordion>
+
+  <Accordion title="5. Rhythm via hero slides">
+    A deck with only content slides exhausts the eye. A deck with too many hero slides loses meaning. The enforced pattern alternates hero and non-hero slides every three to four pages.
+
+    Hard rules: no more than three consecutive slides with the same theme class, at least one `hero dark` and one `hero light` in any deck over eight slides, and at least one `dark` body slide to break up runs of `light` pages.
+  </Accordion>
+
+  <Accordion title="6. Consistent terminology">
+    "Skills" is Skills. "Harness" is Harness. These terms are used by the audience as English words — translating them into Chinese, or using different translations across slides, creates the impression of an AI-generated deck rather than a curated one.
+
+    Pick one form for each term at the outline stage and do not deviate.
+  </Accordion>
+</AccordionGroup>
+
+## What this aesthetic deliberately avoids
+
+The following elements are incompatible with the magazine × e-ink aesthetic. Encountering any of them in a generated deck is a signal to fix before delivery:
+
+- **Box shadows** on images, cards, or containers — they read as "presentation software default"
+- **Thick borders** used as visual separators — use font size contrast and whitespace instead
+- **Floating card effects** with padded backgrounds inside content areas
+- **Emoji** used as icons — Lucide line icons are the only permitted icon system
+- **Border radii above 8px** — the `.frame-img` preset uses 4px; going higher reads as consumer app UI
+- **Animation on body slides** — transitions belong on the WebGL layer, not on content elements
+
+<Info>
+These principles come from 5 real iterations of the author's own presentation workflow. Breaking any single rule noticeably degrades the visual result.
+</Info>

@@ -1,0 +1,64 @@
+---
+title: "Layout 4: Quote and image (left text, right image)"
+description: "Two-column narrative layout: key statement and callout on the left, supporting image on the right. The primary body-slide rhythm driver in editorial decks."
+---
+
+The quote and image layout is for narrative slides that combine a key point with visual evidence. The left column holds the heading, lead copy, and a callout that pins to the bottom of the column; the right column holds a single image. This is the most common body-slide layout — it works equally well for identity reveals, story beats, product showcases, and argument slides.
+
+**Default theme:** `light` and `dark` alternating — this layout is the primary rhythm driver in a multi-act deck
+
+## HTML skeleton
+
+```html
+<section class="slide light">
+  <div class="chrome">
+    <div>身份反差 · The Twist</div>
+    <div>03 / 25</div>
+  </div>
+  <div class="frame grid-2-7-5" style="padding-top:6vh">
+    <!-- 左列：标题 + 正文 + callout，flex column 让 callout 贴列底 -->
+    <div style="display:flex; flex-direction:column; justify-content:space-between; gap:3vh">
+      <div>
+        <div class="kicker">BUT</div>
+        <h2 class="h-xl" style="white-space:nowrap; font-size:7.2vw">
+          我不是程序员。
+        </h2>
+        <p class="lead" style="margin-top:3vh">
+          大学毕业之后再也没写过一行代码。过去十年做的是 UI 设计和 AI 特效。
+        </p>
+      </div>
+      <div class="callout">
+        "这东西在三年前，<br>
+        需要一个十人团队做一年。"
+        <div class="callout-src">— 一个观察者的判断</div>
+      </div>
+    </div>
+    <!-- 右列：图片用标准 16/10 比例 + max-height，不要 align-self:end -->
+    <figure class="frame-img" style="aspect-ratio:16/10; max-height:56vh">
+      <img src="images/codepilot.png" alt="CodePilot 产品截图">
+      <figcaption class="img-cap">CodePilot · 产品截图</figcaption>
+    </figure>
+  </div>
+  <div class="foot">
+    <div>Page 03 · 我不是程序员</div>
+    <div>— · —</div>
+  </div>
+</section>
+```
+
+## Grid and column behavior
+
+The layout uses `.grid-2-7-5`: the left column receives 7 parts and the right column receives 5 parts. The `align-items:start` default (already set in `template.html`) means both columns anchor to the top of the grid cell.
+
+**Left column:** use `display:flex; flex-direction:column; justify-content:space-between` so the heading group pins to the top of the column and the callout pins to the bottom. This creates a natural vertical tension without any absolute positioning.
+
+**Right column:** use a standard image ratio (`16/10` or `4/3`) with a `max-height:56vh` cap. The image will `object-fit:cover` from the top automatically.
+
+## Image rules
+
+- Use `aspect-ratio:16/10` or `aspect-ratio:4/3` with `max-height:56vh` — never copy the original image's native ratio (e.g. `2592/1798`).
+- Do **not** add `align-self:end` to the right-column figure. This causes the image to slide to the bottom of the grid cell and be obscured by browser chrome on smaller screens.
+
+<Warning>
+Never use `align-self:end` on the right-column `<figure>`. The grid's `align-items:start` already anchors it correctly. Adding `align-self:end` overrides that and moves the image to the cell bottom where browser toolbars can cover it.
+</Warning>
